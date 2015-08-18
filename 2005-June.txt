@@ -1,0 +1,711 @@
+From jlenton at gmail.com  Sat Jun 18 23:36:29 2005
+From: jlenton at gmail.com (John Lenton)
+Date: Sat, 18 Jun 2005 18:36:29 -0300
+Subject: [Cimarron-hackers] =?ISO-8859-1?Q?Re:_D=F3nde_est=E1_zope.schema=3F?=
+In-Reply-To: <1119125721.31705.18.camel@michelle>
+References: <1119125721.31705.18.camel@michelle>
+Message-ID: <2d9e37f905061814365d768ac4@mail.gmail.com>
+
+On 6/18/05, Federico Heinz <fheinz at vialibre.org.ar> wrote:
+> John,
+> 
+> hoy trat? de ver si andaba bien el ejemplo que puse en el tutorial, y de
+> golpe no puedo hacer nada por el tema de que no encuentra zope.schema:
+> 
+> fheinz at michelle:~/src/cimarron$ python tutorial/simplepersoneditor.py
+> Traceback (most recent call last):
+>   File "tutorial/simplepersoneditor.py", line 1, in ?
+>     from papo import cimarron
+>   File "/home/fheinz/src/cimarron/papo/cimarron/__init__.py", line 24, in ?
+>     from zope.schema import Object
+> ImportError: No module named schema
+> 
+> Antes de esto se quejaba de que no encontraba zope.interface, pero eso
+> fue f?cil de arreglar (apt-get install python-zopeinterface). El
+> problema es que no veo d?nde est? la definici?n de zope.schema. Lo m?s
+> sospechoso de contenerlo es zope-archetypes, pero eso depende de Zope
+> itself, y me parece que eso es una dependencia demasiado fuerte para
+> poder usar cimarr?n...
+
+apt-get install zope3-lib :)
+
+-- 
+John Lenton (jlenton at gmail.com) -- Random fortune:
+Don't anthropomorphise computers and cars, They hate that.
+
+
+From jlenton at gmail.com  Mon Jun 20 16:35:15 2005
+From: jlenton at gmail.com (John Lenton)
+Date: Mon, 20 Jun 2005 11:35:15 -0300
+Subject: [Cimarron-hackers] =?ISO-8859-1?Q?Re:_[Cimarron-hackers]_Re:_D=F3nde_est=E1_zope.schema=3F?=
+In-Reply-To: <1119160692.31705.52.camel@michelle>
+References: <1119125721.31705.18.camel@michelle>
+	 <2d9e37f905061814365d768ac4@mail.gmail.com>
+	 <1119160692.31705.52.camel@michelle>
+Message-ID: <2d9e37f905062007353f0ab82@mail.gmail.com>
+
+Por favor, a cimarron-hackers.
+
+On 6/19/05, Federico Heinz <fheinz at vialibre.org.ar> wrote:
+> On Sat, 2005-06-18 at 18:36 -0300, John Lenton wrote:
+> > apt-get install zope3-lib :)
+> 
+> Hmmm.... not quite:
+> 
+> michelle# apt-get install zope3-lib
+> Reading Package Lists... Done
+> Building Dependency Tree... Done
+> E: Couldn't find package zope3-lib
+> michelle# apt-cache search --names-only zope3 lib
+> michelle# apt-cache search --names-only zope lib
+> libroxen-zopegw - Zope relay module for the Roxen Challenger web server
+> 
+> Alternatives?
+
+[ para el archivo: Fede est? usando debian sid (o testing?) ]
+
+1. bajar las fuentes del sitio de zope3 (ver README.txt)
+2. bajar las fuentes del paquete de ubuntu y hacer un dpkg-buildpackage,
+
+-- 
+John Lenton (jlenton at gmail.com) -- Random fortune:
+Don't anthropomorphise computers and cars, They hate that.
+
+
+From fheinz at vialibre.org.ar  Wed Jun 22 12:45:41 2005
+From: fheinz at vialibre.org.ar (Federico Heinz)
+Date: Wed, 22 Jun 2005 12:45:41 +0200
+Subject: [Cimarron-hackers] Re: =?ISO-8859-1?Q?D=F3nde?=
+	=?ISO-8859-1?Q?_est=E1?= zope.schema?
+In-Reply-To: <2d9e37f905062007353f0ab82@mail.gmail.com>
+References: <1119125721.31705.18.camel@michelle>
+	 <2d9e37f905061814365d768ac4@mail.gmail.com>
+	 <1119160692.31705.52.camel@michelle>
+	 <2d9e37f905062007353f0ab82@mail.gmail.com>
+Message-ID: <1119437142.2993.4.camel@michelle>
+
+On Mon, 2005-06-20 at 11:35 -0300, John Lenton wrote:
+> [ para el archivo: Fede est? usando debian sid (o testing?) ]
+
+Testing (etch)
+
+	Fede
+
+-- 
+GnuPG Public Key: gpg --keyserver wwwkeys.eu.pgp.net --recv-key BD02C6E0
+Key Fingerprint: 04F4 08C5 14B7 2C3D DB21  ACF8 6CF5 0B0C BD02 C6E0
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: This is a digitally signed message part
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050622/98471502/attachment.pgp>
+
+From fheinz at vialibre.org.ar  Tue Jun 28 02:51:10 2005
+From: fheinz at vialibre.org.ar (Federico Heinz)
+Date: Tue, 28 Jun 2005 02:51:10 +0200
+Subject: [Cimarron-hackers] Is the 'target' functionality implemented?
+Message-ID: <1119919871.20592.95.camel@michelle>
+
+I checked out svn on Saturday 25th, to see whether the 'target'
+functionality as described in the tutorial was implemented. I still
+haven't been able to test it, but a 'grep -ri target .' in Cimarr?n's
+root directory doesn't seem to find any matches. Is the functionality
+there already or not?
+
+	Fede
+
+-- 
+GnuPG Public Key: gpg --keyserver wwwkeys.eu.pgp.net --recv-key BD02C6E0
+Key Fingerprint: 04F4 08C5 14B7 2C3D DB21  ACF8 6CF5 0B0C BD02 C6E0
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: This is a digitally signed message part
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050628/617b7d6e/attachment.pgp>
+
+From fheinz at vialibre.org.ar  Tue Jun 28 02:52:38 2005
+From: fheinz at vialibre.org.ar (Federico Heinz)
+Date: Tue, 28 Jun 2005 02:52:38 +0200
+Subject: [Cimarron-hackers] Re: [Cimarron-hackers] Re:
+	=?ISO-8859-1?Q?D=F3nde?= =?ISO-8859-1?Q?_est=E1?= zope.schema?
+In-Reply-To: <2d9e37f905062007353f0ab82@mail.gmail.com>
+References: <1119125721.31705.18.camel@michelle>
+	 <2d9e37f905061814365d768ac4@mail.gmail.com>
+	 <1119160692.31705.52.camel@michelle>
+	 <2d9e37f905062007353f0ab82@mail.gmail.com>
+Message-ID: <1119919958.20592.99.camel@michelle>
+
+On Mon, 2005-06-20 at 11:35 -0300, John Lenton wrote:
+> 1. bajar las fuentes del sitio de zope3 (ver README.txt)
+> 2. bajar las fuentes del paquete de ubuntu y hacer un
+> dpkg-buildpackage,
+
+In English, for the sake of aspiring English-language Cimarr?n hackers.
+The problem is that since a few versions, the code from svn does not
+work without the zope3-lib package, which isn't available in Debian
+Sarge, but is available in Ubuntu.
+
+I'm trying to compile the Ubuntu packages, but it's a bitch if you don't
+have installed python2.4-dev, and even then it looks like the
+debian/rules is broken (fails to find a RADME.txt it expects).
+
+	Fede
+-- 
+GnuPG Public Key: gpg --keyserver wwwkeys.eu.pgp.net --recv-key BD02C6E0
+Key Fingerprint: 04F4 08C5 14B7 2C3D DB21  ACF8 6CF5 0B0C BD02 C6E0
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: This is a digitally signed message part
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050628/e2b1a45e/attachment.pgp>
+
+From jlenton at gmail.com  Tue Jun 28 22:42:34 2005
+From: jlenton at gmail.com (John Lenton)
+Date: Tue, 28 Jun 2005 17:42:34 -0300
+Subject: [Cimarron-hackers] =?ISO-8859-1?Q?Re:_[Cimarron-hackers]_Re:_[Cimarron?=
+ =?ISO-8859-1?Q?-hackers]_Re:_D=F3nde_est=E1_zope.schema=3F?=
+In-Reply-To: <1119919958.20592.99.camel@michelle>
+References: <1119125721.31705.18.camel@michelle>
+	 <2d9e37f905061814365d768ac4@mail.gmail.com>
+	 <1119160692.31705.52.camel@michelle>
+	 <2d9e37f905062007353f0ab82@mail.gmail.com>
+	 <1119919958.20592.99.camel@michelle>
+Message-ID: <2d9e37f90506281342661fc649@mail.gmail.com>
+
+On 6/27/05, Federico Heinz <fheinz at vialibre.org.ar> wrote:
+> 
+> In English, for the sake of aspiring English-language Cimarr?n hackers.
+> The problem is that since a few versions, the code from svn does not
+> work without the zope3-lib package, which isn't available in Debian
+> Sarge, but is available in Ubuntu.
+> 
+> I'm trying to compile the Ubuntu packages, but it's a bitch if you don't
+> have installed python2.4-dev, and even then it looks like the
+> debian/rules is broken (fails to find a RADME.txt it expects).
+
+I believe we built them against python2.3 in sarge without a hich.
+
+Anyhow, should we include the source for the zope3 libraries in an svn
+checkout (via the svn:externals mechanism)? It would simplify the
+process, but an 'svn update' could be expensive.
+
+-- 
+John Lenton (jlenton at gmail.com) -- Random fortune:
+Don't anthropomorphise computers and cars, They hate that.
+
+
+From fheinz at vialibre.org.ar  Wed Jun 29 02:42:58 2005
+From: fheinz at vialibre.org.ar (Federico Heinz)
+Date: Wed, 29 Jun 2005 02:42:58 +0200
+Subject: [Cimarron-hackers] Is the 'target' functionality implemented?
+In-Reply-To: <2d9e37f9050628124518e486cd@mail.gmail.com>
+References: <1119919871.20592.95.camel@michelle>
+	 <2d9e37f9050628124518e486cd@mail.gmail.com>
+Message-ID: <1120005778.4543.88.camel@michelle>
+
+On Tue, 2005-06-28 at 16:45 -0300, John Lenton wrote:
+> yes, it has been there since saturday the 25th (perhaps after you
+> checked :D).
+
+Obviously :-)
+
+> However it was broken, and has only actually been functional since
+> about yesterday; one of the tests still fails.
+
+Is it possible that it still is broken? I finally managed to install
+zope3-lib, and I can't get it to work. Maybe it's just that I still
+haven't figured it out. I know a goofed a few times in the code that is
+available in the tutorial as simplepersoneditor.py:
+      * first, I declared |target| as a property, so that I would be
+        able to set the target with |self.target = something|. This
+        breaks, because Control's initializer does an assignment to the
+        |target| property, which then calls the |setTarget| method with
+        the object still not fully initialized. So I guess it can't be a
+        property.
+      * then I assumed that the correct method to set the target would
+        have to be |setTarget()|, but it seems that it is |newTarget()|
+        instead. ?Is this correct?
+      * however, if I use |newTarget()| there seems to be a problem with
+        my model not providing a |getattr()| method:
+                fheinz at michelle:~/src/cimarron$ python tutorial/simplepersoneditor.py
+                Traceback (most recent call last):
+                  File "tutorial/simplepersoneditor.py", line 36, in ?
+                    w.setTarget(Person(name="John", surname="Doe"))
+                  File "tutorial/simplepersoneditor.py", line 27, in setTarget
+                    self.nameWidget.newTarget(aPerson)
+                  File "/home/fheinz/src/cimarron/fvl/cimarron/skins/common/__init__.py", line 346, in newTarget
+                    value = self.target.getattr(self.attribute)
+                AttributeError: 'Person' object has no attribute 'getattr'
+
+OK, so what is it I am missing? Please check the code in the tutorial in
+svn.
+
+	Fede
+
+-- 
+GnuPG Public Key: gpg --keyserver wwwkeys.eu.pgp.net --recv-key BD02C6E0
+Key Fingerprint: 04F4 08C5 14B7 2C3D DB21  ACF8 6CF5 0B0C BD02 C6E0
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: This is a digitally signed message part
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050629/6d4678f9/attachment.pgp>
+
+From jlenton at gmail.com  Wed Jun 29 04:15:58 2005
+From: jlenton at gmail.com (John Lenton)
+Date: Tue, 28 Jun 2005 23:15:58 -0300
+Subject: [Cimarron-hackers] Is the 'target' functionality implemented?
+In-Reply-To: <1120005778.4543.88.camel@michelle>
+References: <1119919871.20592.95.camel@michelle>
+	 <2d9e37f9050628124518e486cd@mail.gmail.com>
+	 <1120005778.4543.88.camel@michelle>
+Message-ID: <2d9e37f9050628191568cc9274@mail.gmail.com>
+
+On 6/28/05, Federico Heinz <fheinz at vialibre.org.ar> wrote:
+> [ weird target breakage ]
+> OK, so what is it I am missing? Please check the code in the tutorial in
+> svn.
+
+will do, sah!
+
+-- 
+John Lenton (jlenton at gmail.com) -- Random fortune:
+Don't anthropomorphise computers and cars, They hate that.
+
+
+From jlenton at gmail.com  Tue Jun 28 21:45:11 2005
+From: jlenton at gmail.com (John Lenton)
+Date: Tue, 28 Jun 2005 16:45:11 -0300
+Subject: [Cimarron-hackers] Is the 'target' functionality implemented?
+In-Reply-To: <1119919871.20592.95.camel@michelle>
+References: <1119919871.20592.95.camel@michelle>
+Message-ID: <2d9e37f9050628124518e486cd@mail.gmail.com>
+
+On 6/27/05, Federico Heinz <fheinz at vialibre.org.ar> wrote:
+> I checked out svn on Saturday 25th, to see whether the 'target'
+> functionality as described in the tutorial was implemented. I still
+> haven't been able to test it, but a 'grep -ri target .' in Cimarr?n's
+> root directory doesn't seem to find any matches. Is the functionality
+> there already or not?
+
+yes, it has been there since saturday the 25th (perhaps after you
+checked :D). However it was broken, and has only actually been
+functional since about yesterday; one of the tests still fails.
+
+-- 
+John Lenton (jlenton at gmail.com) -- Random fortune:
+Don't anthropomorphise computers and cars, They hate that.
+
+
+From john at except.com.ar  Wed Jun 29 10:25:06 2005
+From: john at except.com.ar (John Lenton)
+Date: Wed, 29 Jun 2005 05:25:06 -0300
+Subject: [Cimarron-hackers] Is the 'target' functionality implemented?
+In-Reply-To: <1120005778.4543.88.camel@michelle>
+References: <1119919871.20592.95.camel@michelle>	 <2d9e37f9050628124518e486cd@mail.gmail.com> <1120005778.4543.88.camel@michelle>
+Message-ID: <42C25AE2.2080607@except.com.ar>
+
+Federico Heinz wrote:
+> Is it possible that it still is broken? I finally managed to install
+> zope3-lib, and I can't get it to work. Maybe it's just that I still
+> haven't figured it out. I know a goofed a few times in the code that is
+> available in the tutorial as simplepersoneditor.py:
+>       * first, I declared |target| as a property, so that I would be
+>         able to set the target with |self.target = something|. This
+>         breaks, because Control's initializer does an assignment to the
+>         |target| property, which then calls the |setTarget| method with
+>         the object still not fully initialized. So I guess it can't be a
+>         property.
+
+ok. You seem to be caught up in these property things, when you
+shouldn't, really; properties are things you should use when two
+things happen:
+
+ - there are no obvious (to the clients of the class) side-effects
+to reading or writing the property, *and*
+ - a plain ol' attribute isn't enough
+
+If there is a client-obvious side-effect to accessing the property,
+e.g. window.close, then it should be a method. If a plain ol'
+attribute is enough, just use a plain ol' attribute!
+
+In fact, look what your simpleperson.py should look like:
+
+|    from model.base import Model
+|
+|    class Person(Model):
+|        def __init__(self, name=None, surname=None):
+|            super(Person, self).__init__()
+|            self.name = name
+|            self.surname = surname
+
+
+and that's it. In fact, the text in the tutorial that says "It is
+important to note that attributes that are to be under the control
+of a \Cimarron{} widget must be declared as properties" is just wrong.
+
+>       * then I assumed that the correct method to set the target would
+>         have to be |setTarget()|, but it seems that it is |newTarget()|
+>         instead. ?Is this correct?
+
+yes, newTarget it is.
+
+>       * however, if I use |newTarget()| there seems to be a problem with
+>         my model not providing a |getattr()| method:
+>                 fheinz at michelle:~/src/cimarron$ python tutorial/simplepersoneditor.py
+>                 Traceback (most recent call last):
+>                   File "tutorial/simplepersoneditor.py", line 36, in ?
+>                     w.setTarget(Person(name="John", surname="Doe"))
+>                   File "tutorial/simplepersoneditor.py", line 27, in setTarget
+>                     self.nameWidget.newTarget(aPerson)
+>                   File "/home/fheinz/src/cimarron/fvl/cimarron/skins/common/__init__.py", line 346, in newTarget
+>                     value = self.target.getattr(self.attribute)
+>                 AttributeError: 'Person' object has no attribute 'getattr'
+
+right, you should either inherit from model.base.Model (it's in
+examples/person for now, but probably should go elsewhere if we
+decide it's worth it: it really is very trivial as it stands) which
+will give you fairly obvious getattr/setattr methods, or implement
+your own (again, very trivial: look at model.base.Model).
+
+> OK, so what is it I am missing? Please check the code in the tutorial in
+> svn.
+
+here, take a look at simplepersoneditor.py as it stands now (I'm
+comitting this so you get it, but feel free to roll back the changes
+if you disagree):
+
+|    from fvl import cimarron
+|    from simpleperson import Person
+|    cimarron.config()
+|
+|    class PersonEditor(cimarron.skin.WindowController):
+|        def __init__(self, target=None, **kw):
+|            super(PersonEditor, self).__init__(**kw)
+|            self.win.title = 'Main Window'
+|            outer_vbox = cimarron.skin.VBox(parent=self.win)
+|            hbox = cimarron.skin.HBox(parent=outer_vbox)
+|            vbox = cimarron.skin.VBox(parent=hbox)
+|            cimarron.skin.Label(parent=vbox, text='Name:')
+|            cimarron.skin.Label(parent=vbox, text='Surname:')
+|            vbox = cimarron.skin.VBox(parent=hbox)
+|            self.nameWidget = \
+|                cimarron.skin.Entry(parent=vbox,
+|                                    attribute="name")
+|            self.surnameWidget = \
+|                cimarron.skin.Entry(parent=vbox,
+|                                    attribute="surname")
+|            cimarron.skin.Button(parent=outer_vbox,
+|                                 label='Check',
+|                                 onAction=self.checkValues)
+|            if target is not None:
+|                self.newTarget(target)
+|
+|        def checkValues(self, sender):
+|           print "Mr/Ms %s, %s" % (self.target.surname,
+|                                   self.target.name)
+|
+|        def newTarget(self, *a, **kw):
+|            super(PersonEditor, self).newTarget(*a, **kw)
+|            self.nameWidget.newTarget(self.target)
+|            self.surnameWidget.newTarget(self.target)
+|
+|        def refresh(self):
+|            self.nameWidget.refresh()
+|            self.surnameWidget.refresh()
+|
+|    app = cimarron.skin.Application()
+|    w = PersonEditor(parent=app, target=Person(name="John",
+|                                               surname="Doe"))
+|    w.show()
+|    app.run()
+
+cheers!
+
+-- 
+John Lenton (john at except.com.ar)
+except - responsible free software developers for hire.
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 256 bytes
+Desc: OpenPGP digital signature
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050629/59999a21/attachment.pgp>
+
+From john at except.com.ar  Wed Jun 29 10:47:55 2005
+From: john at except.com.ar (John Lenton)
+Date: Wed, 29 Jun 2005 05:47:55 -0300
+Subject: [Cimarron-hackers] Is the 'target' functionality implemented?
+In-Reply-To: <42C25AE2.2080607@except.com.ar>
+References: <1119919871.20592.95.camel@michelle>	 <2d9e37f9050628124518e486cd@mail.gmail.com> <1120005778.4543.88.camel@michelle> <42C25AE2.2080607@except.com.ar>
+Message-ID: <42C2603B.1080804@except.com.ar>
+
+John Lenton wrote:
+> Federico Heinz wrote:
+>>      * then I assumed that the correct method to set the target would
+>>        have to be |setTarget()|, but it seems that it is |newTarget()|
+>>        instead. ?Is this correct?
+> 
+> 
+> yes, newTarget it is.
+
+I feel I should expand on this a bit: if |foo| is a Control, then
+
+|    foo.attribute = 'name'
+
+prepares |foo| to manipulate the 'name' attribute of its target.
+
+|    foo.target = target
+
+prepares |foo| to manipulate the 'name' attribute of this target,
+specifically.
+
+|    foo.value = value
+
+sets the value of |foo| directly.
+
+|    foo.refresh()
+
+sets the value of |foo| from the target, i.e., |foo| does
+
+|    self.value = self.target.getattr(self.attribute)
+
+Next, we have
+
+|    foo.newTarget(target)
+
+which is equivalent to
+
+|    foo.target = target
+|    foo.refresh()
+
+except that |target| is optional (defaults to |self.target|);
+finally we have
+
+|    foo.commitValue(value)
+
+which is equivalent to
+
+|    self.value = value
+|    self.target.setattr(self.attribute, value)
+
+except that |value| is optional (defaulting to |self.value|).
+
+Most of the time you want the value to change when you change the
+target, and most of the time you want the target to be notified when
+you change the value: you are wanting side effects, so you use the
+methods. However, sometimes you explicitly do *not* want the side
+effects: use direct assignment in those cases.
+
+Ok?
+
+-- 
+John Lenton (john at except.com.ar)
+except - responsible free software developers for hire.
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 256 bytes
+Desc: OpenPGP digital signature
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050629/8935ca54/attachment.pgp>
+
+From fheinz at vialibre.org.ar  Thu Jun 30 00:42:28 2005
+From: fheinz at vialibre.org.ar (Federico Heinz)
+Date: Thu, 30 Jun 2005 00:42:28 +0200
+Subject: [Cimarron-hackers] Is the 'target' functionality implemented?
+In-Reply-To: <42C25AE2.2080607@except.com.ar>
+References: <1119919871.20592.95.camel@michelle>
+	 <2d9e37f9050628124518e486cd@mail.gmail.com>
+	 <1120005778.4543.88.camel@michelle>  <42C25AE2.2080607@except.com.ar>
+Message-ID: <1120084949.4543.122.camel@michelle>
+
+On Wed, 2005-06-29 at 05:25 -0300, John Lenton wrote:
+> ok. You seem to be caught up in these property things, when you
+> shouldn't
+
+Marcos got me fixed on them! It's his fault! :-)
+OK, I got it. I somehow got the idea that they were pretty much
+omnipresent in Cimarr?n, and started using them for just about anything,
+let's say to keep things orthogonal. Now I'm a bit wiser.
+
+> and that's it. In fact, the text in the tutorial that says "It is
+> important to note that attributes that are to be under the control
+> of a \Cimarron{} widget must be declared as properties" is just wrong.
+
+OK, fixed.
+
+> right, you should either inherit from model.base.Model (it's in
+> examples/person for now, but probably should go elsewhere if we
+> decide it's worth it: it really is very trivial as it stands) which
+> will give you fairly obvious getattr/setattr methods, or implement
+> your own (again, very trivial: look at model.base.Model).
+
+Well, you tell me what's better... Because we must either tell future
+users that they ought to define this trivial access mode, or that they
+have to inherit from that class.
+
+> here, take a look at simplepersoneditor.py as it stands now (I'm
+> comitting this so you get it, but feel free to roll back the changes
+> if you disagree):
+
+I don't disagree, but the code seems to do it for me: it doesn't work.
+To actually make it work, you have to call |foo.commitValue()| on each
+widget in the |checkValues()| method. I think this is not what we want.
+The idea behind the target thing is that it should allow the programmer
+to just assign a target to a control, and then just plain forget about
+it. Any changes made to the object are active immediately (for Entry
+instances, for example, on losing focus). Of course, there may be a an
+"Apply" button somewhere in advanced screens, which would apply the
+changes to the database. But you should not need to do the step of
+calling |commitValues()| on all widgets for it.
+
+There are a number of disadvantages to the current approach. Off the top
+of my head, if an "Apply" button has to call |commitValue()| on each
+widget, then it will effectively change the values of all the objects in
+the view, regardless of whether the user changed them or not. This can't
+be good. It also adds to the complexity of the program, without adding
+any useful functionality. So I think |commitValue()| has to go, and be
+replaced by immediate change of the object value.
+
+I have left |checkValues()| as it was (i.e. without the calls to the
+method |commitValues()|) because that is the way I think it ought to
+work. Please change the control's behavior to work with the code, or
+tell me why |commitValues()| is necessary.
+
+	Fede
+
+-- 
+GnuPG Public Key: gpg --keyserver wwwkeys.eu.pgp.net --recv-key BD02C6E0
+Key Fingerprint: 04F4 08C5 14B7 2C3D DB21  ACF8 6CF5 0B0C BD02 C6E0
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: This is a digitally signed message part
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050630/b569523c/attachment.pgp>
+
+From john at except.com.ar  Thu Jun 30 04:43:12 2005
+From: john at except.com.ar (John Lenton)
+Date: Wed, 29 Jun 2005 23:43:12 -0300
+Subject: [Cimarron-hackers] Is the 'target' functionality implemented?
+In-Reply-To: <1120084949.4543.122.camel@michelle>
+References: <1119919871.20592.95.camel@michelle>	 <2d9e37f9050628124518e486cd@mail.gmail.com>	 <1120005778.4543.88.camel@michelle>  <42C25AE2.2080607@except.com.ar> <1120084949.4543.122.camel@michelle>
+Message-ID: <42C35C40.2030606@except.com.ar>
+
+Federico Heinz wrote:
+> On Wed, 2005-06-29 at 05:25 -0300, John Lenton wrote:
+>>right, you should either inherit from model.base.Model (it's in
+>>examples/person for now, but probably should go elsewhere if we
+>>decide it's worth it: it really is very trivial as it stands) which
+>>will give you fairly obvious getattr/setattr methods, or implement
+>>your own (again, very trivial: look at model.base.Model).
+> 
+> Well, you tell me what's better... Because we must either tell future
+> users that they ought to define this trivial access mode, or that they
+> have to inherit from that class.
+
+I've been working on models today, and this "trivial" model will be
+in fvl.cimarron.model.base.
+
+>>here, take a look at simplepersoneditor.py as it stands now (I'm
+>>comitting this so you get it, but feel free to roll back the changes
+>>if you disagree):
+> 
+> I don't disagree, but the code seems to do it for me: it doesn't work.
+> To actually make it work, you have to call |foo.commitValue()| on each
+> widget in the |checkValues()| method. I think this is not what we want.
+> The idea behind the target thing is that it should allow the programmer
+> to just assign a target to a control, and then just plain forget about
+> it. Any changes made to the object are active immediately (for Entry
+> instances, for example, on losing focus). Of course, there may be a an
+> "Apply" button somewhere in advanced screens, which would apply the
+> changes to the database. But you should not need to do the step of
+> calling |commitValues()| on all widgets for it.
+
+Whoa! slow down! :-D
+
+Currently the widget does not do a |commitValue| upon focus out,
+because of a bug in the code. Just press <enter> and you'll get the
+behavior you want.
+
+Are you absolutely positive that we want to commit on focus out by
+default?
+
+-- 
+John Lenton (john at except.com.ar)
+except - responsible free software developers for hire.
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 256 bytes
+Desc: OpenPGP digital signature
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050629/14b32305/attachment.pgp>
+
+From fheinz at vialibre.org.ar  Thu Jun 30 11:46:49 2005
+From: fheinz at vialibre.org.ar (Federico Heinz)
+Date: Thu, 30 Jun 2005 11:46:49 +0200
+Subject: [Cimarron-hackers] Is the 'target' functionality implemented?
+In-Reply-To: <42C35C40.2030606@except.com.ar>
+References: <1119919871.20592.95.camel@michelle>
+	 <2d9e37f9050628124518e486cd@mail.gmail.com>
+	 <1120005778.4543.88.camel@michelle>  <42C25AE2.2080607@except.com.ar>
+	 <1120084949.4543.122.camel@michelle>  <42C35C40.2030606@except.com.ar>
+Message-ID: <1120124810.22169.29.camel@michelle>
+
+On Wed, 2005-06-29 at 23:43 -0300, John Lenton wrote:
+> Whoa! slow down! :-D
+
+Slowing... down... slowed.
+
+> Currently the widget does not do a |commitValue| upon focus out,
+> because of a bug in the code. Just press <enter> and you'll get the
+> behavior you want.
+
+aha! Hadn't noticed it.
+
+> Are you absolutely positive that we want to commit on focus out by
+> default?
+
+Hmm... I'm sure we want the screen to reflect the object's state (which
+is the case now if the user presses <Enter>), and not a future object
+state (which is the case now if the user presses <Tab>), and much less a
+mix between the two (which is the case now if the user presses <Enter>
+some, <Tab> some). The only way I can think of right now to get that
+behavior is to commit on focus out for Entry instances, and on other
+events for other widgets (on click for buttons, for example, on select
+for calendars, etc).
+
+Maybe we shouldn't force a commit on focus out, but rather check whether
+the value has really changed (compare the widget's value against the
+model), and only commit if there has been a real change.
+
+BTW: do you like the Cimarr?n 4-op calculator I'm about to include in
+the tutorial?
+
+	Fede
+
+-- 
+GnuPG Public Key: gpg --keyserver wwwkeys.eu.pgp.net --recv-key BD02C6E0
+Key Fingerprint: 04F4 08C5 14B7 2C3D DB21  ACF8 6CF5 0B0C BD02 C6E0
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: This is a digitally signed message part
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050630/aaeda65f/attachment.pgp>
+

@@ -1,0 +1,179 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Cimarron-hackers] A question about the implementation of	validation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/cimarron-hackers/2005-August/index.html" >
+   <LINK REL="made" HREF="mailto:cimarron-hackers%40lists.berlios.de?Subject=Re%3A%20%5BCimarron-hackers%5D%20A%20question%20about%20the%20implementation%20of%09validation&In-Reply-To=%3C42FD92FE.6000207%40except.com.ar%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000048.html">
+   <LINK REL="Next"  HREF="000054.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Cimarron-hackers] A question about the implementation of	validation</H1>
+    <B>John Lenton</B> 
+    <A HREF="mailto:cimarron-hackers%40lists.berlios.de?Subject=Re%3A%20%5BCimarron-hackers%5D%20A%20question%20about%20the%20implementation%20of%09validation&In-Reply-To=%3C42FD92FE.6000207%40except.com.ar%3E"
+       TITLE="[Cimarron-hackers] A question about the implementation of	validation">john at except.com.ar
+       </A><BR>
+    <I>Sat Aug 13 08:28:14 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000048.html">[Cimarron-hackers] A question about the implementation of	validation
+</A></li>
+        <LI>Next message: <A HREF="000054.html">[Cimarron-hackers] A question about the implementation	of	validation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#49">[ date ]</a>
+              <a href="thread.html#49">[ thread ]</a>
+              <a href="subject.html#49">[ subject ]</a>
+              <a href="author.html#49">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Federico Heinz wrote:
+&gt;<i> Please, don't forget that LOCs are not the *only* benchmark. We also
+</I>&gt;<i> have to make it easy for developers to use and modify.
+</I>
+Indeed.
+
+&gt;<i> I am not sure
+</I>&gt;<i> about the way this property thing would be implemented, especially I
+</I>&gt;<i> don't know whether it would be automatically compatible with the current
+</I>&gt;<i> Model.setattr() method. What I am concerned is about how much a class
+</I>&gt;<i> must know about the implementation of its superclasses. Does the
+</I>&gt;<i> programmer have to be aware whether a superclass already declared that
+</I>&gt;<i> property? What happens if someone does it twice? What happens if someone
+</I>&gt;<i> assumes a superclass did, but it's not true?
+</I>
+hold it. Let's look at some code, as it would stand right now (i.e.
+given current interfaces), shall we?
+
+Say we have a very simple model:
+
+    class Simple(Model):
+        def __init__(self, anAttribute=None):
+            self.anAttribute = anAttribute
+
+access from Cimarr&#243;n to the model is done via the IModel interface,
+in other words, if an instance of Simple is the target of a Control
+whose attibute is 'anAttribute', the Control will do
+
+    self.target.getattr(self.attribute)
+
+to fetch the value, and
+
+    self.target.setattr(self.attribute, value)
+
+to store the value. And that's it, that's all the interface
+currently says. Keep in mind also that there are two kinds of
+accesses to a Model: internal, via direct attribute manipulation (as
+in the __init__), and external, *which only happens via
+getattr/setattr methods*.
+
+How is setattr currently implemented? Well, if we ignore the fact
+that the attribute can actually be a path, it's basically this:
+
+    class Model(object):
+        def setattr(self, attr, value):
+            setattr(self, attr, value)
+
+ok. So that's the situation, as it stands. Now, let's think about
+validation.
+
+What kind of validation do we mean? Or, what kind do we want or
+need? One kind whose solution leaps to mind is to validate external
+modifications only, i.e. to have
+
+    class Model(object):
+        def setattr(self, attr, value):
+            self.validate(attr, value)
+            setattr(self, attr, value)
+
+and have |validate| raise the appropriate exception if the value is
+invalid.
+
+Another kind is validating all modifications. This can be done with
+a bit of python magic (only a bit):
+
+    class Model(object):
+        def __setattr__(self, attr, value):
+            self.validate(attr, value)
+            super(Model, self).__setattr__(attr, value)
+        def setattr(self, attr, value):
+            setattr(self, attr, value)
+
+whether we need this much validation is debatable, but it's simple
+enough to do if we do.
+
+Both these validation schemes have (at least) a problem, which isn't
+present in Modeling's way of doing validation: it requires validity
+all the time. There are situations where your object must transition
+past an invalid state to reach a valid state. One way around this
+would be to use pre-commit validation as merely informative, i.e.
+let the model be invalid but notify the user. As it's a notification
+and not an error, I think I wouldn't actually raise an exception
+(although again this is debatable), but rather something like
+
+    class Model(object):
+        def setattr(self, attr, value):
+            setattr(self, attr, value)
+            return self.validate(attr, value)
+
+here validate would return -- for example -- None (as it does
+currently) for valid, and some message for invalid, and the Control
+would notify the user using this return value. Or it could return a
+string-like value that was False when non-'Ok'... yeah, that might
+be even better
+
+    class ValidityMessage(unicode):
+        def __nonzero__(self):
+            return self == 'Ok'
+
+so the Control could do
+
+    valid = self.target.setattr(self.attribute, value)
+    if not valid:
+        self.window.statusbar.warn(valid)
+        self.paint_in_garish_colours_so_user_notices()
+
+would this be (a) sufficient, and (b) easy to use and modify?
+
+-- 
+John Lenton (<A HREF="https://lists.berlios.de/mailman/listinfo/cimarron-hackers">john at except.com.ar</A>)
+except - responsible free software developers for hire.
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 256 bytes
+Desc: OpenPGP digital signature
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050813/819afbd1/attachment.pgp">https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050813/819afbd1/attachment.pgp</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000048.html">[Cimarron-hackers] A question about the implementation of	validation
+</A></li>
+	<LI>Next message: <A HREF="000054.html">[Cimarron-hackers] A question about the implementation	of	validation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#49">[ date ]</a>
+              <a href="thread.html#49">[ thread ]</a>
+              <a href="subject.html#49">[ subject ]</a>
+              <a href="author.html#49">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/cimarron-hackers">More information about the Cimarron-hackers
+mailing list</a><br>
+</body></html>

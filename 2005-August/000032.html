@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Cimarron-hackers] A few things in Cimarr&#243;n that need doing
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/cimarron-hackers/2005-August/index.html" >
+   <LINK REL="made" HREF="mailto:cimarron-hackers%40lists.berlios.de?Subject=Re%3A%20%5BCimarron-hackers%5D%20A%20few%20things%20in%20%3D%3FISO-8859-1%3FQ%3FCimarr%3DF3n%3F%3D%20that%20need%20doing&In-Reply-To=%3C1123771127.3502.34.camel%40michelle%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000034.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Cimarron-hackers] A few things in Cimarr&#243;n that need doing</H1>
+    <B>Federico Heinz</B> 
+    <A HREF="mailto:cimarron-hackers%40lists.berlios.de?Subject=Re%3A%20%5BCimarron-hackers%5D%20A%20few%20things%20in%20%3D%3FISO-8859-1%3FQ%3FCimarr%3DF3n%3F%3D%20that%20need%20doing&In-Reply-To=%3C1123771127.3502.34.camel%40michelle%3E"
+       TITLE="[Cimarron-hackers] A few things in Cimarr&#243;n that need doing">fheinz at vialibre.org.ar
+       </A><BR>
+    <I>Thu Aug 11 16:38:46 CEST 2005</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000034.html">[Cimarron-hackers] Re: [Cimarron-hackers] A few things in Cimarr&#243;n that need doing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#32">[ date ]</a>
+              <a href="thread.html#32">[ thread ]</a>
+              <a href="subject.html#32">[ subject ]</a>
+              <a href="author.html#32">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>While working on the tutorial, I feel that there are a few functions
+that we must implement soon, for their need is pretty much obvious.
+
+     1. Deleting rows from Grids: We can now create rows, and edit
+        existing rows, but we cannot get rid of a row. This
+        functionality is so basic that we need a general mechanism for
+        handling it. Maybe a simple trashcan icon at the end of each row
+        will be easy enough. Probably this functionality can be turned
+        on and off with a flag, but I feel that it should be better if
+        we had separate classes EditableGrid and SelectionGrid, since
+        their behaviors are bound to be subtly different. EditableGrid
+        should have at least the following delegation methods:
+              * def will_edit_row_col(self, grid, row, col)
+              * def did_edit_row_col(self, grid, row, col)
+              * def will_delete_row(self, grid, row)
+              * def did_delete_row(self, grid)
+              * def will_add_row(self, grid)
+              * def did_add_row(self, grid, row)
+     2. Data validation: this is extremely basic. Controls should be
+        able to handle ValueError exceptions raised by the model. The
+        exception must be able to provide a user-readable error message
+        parameter, which the Control must somehow bring to the user's
+        attention (see Status Bar below). After the exception, the
+        widget must cancel the editing operation that was in course, and
+        expect further input from the user.
+     3. Status bar: the more I think about it, the more necessary a
+        status bar for each window looks, especially for non-intrusive
+        error reporting. For data-entry-intensive applications, error
+        panels are not an option: they disrupt the normal flow of the
+        task, demand specific actions for their dismissal, etc. We had a
+        very nice, functional status bar in the previous Cimarr&#243;n
+        drafts, I think we should bring it back from the dead. Controls
+        ought to be able to find it and use it to display validation
+        errors. A status bar may be harder to find than a panel for a
+        novice user, but they're the way to go for experienced users. To
+        have the best of both worlds, the status bar can be configured
+        to pop up timed error and warning panels when the priority of
+        the message is above a certain configurable threshold. That way,
+        novices can have their panels, and experienced users a less
+        intrusive mechanism. Since it would centralize this kind of
+        communications with the user, the status bar can also remember
+        which messages it has shown, thus providing better debugging
+        information.
+
+	Fede
+-- 
+GnuPG Public Key: gpg --keyserver wwwkeys.eu.pgp.net --recv-key BD02C6E0
+Key Fingerprint: 04F4 08C5 14B7 2C3D DB21  ACF8 6CF5 0B0C BD02 C6E0
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: This is a digitally signed message part
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050811/acfabed3/attachment.pgp">https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050811/acfabed3/attachment.pgp</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000034.html">[Cimarron-hackers] Re: [Cimarron-hackers] A few things in Cimarr&#243;n that need doing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#32">[ date ]</a>
+              <a href="thread.html#32">[ thread ]</a>
+              <a href="subject.html#32">[ subject ]</a>
+              <a href="author.html#32">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/cimarron-hackers">More information about the Cimarron-hackers
+mailing list</a><br>
+</body></html>

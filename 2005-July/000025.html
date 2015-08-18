@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Cimarron-hackers] make test falla
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/cimarron-hackers/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:cimarron-hackers%40lists.berlios.de?Subject=Re%3A%20%5BCimarron-hackers%5D%20make%20test%20falla&In-Reply-To=%3C1120236939.23552.30.camel%40localhost.localdomain%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000031.html">
+   <LINK REL="Next"  HREF="000026.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Cimarron-hackers] make test falla</H1>
+    <B>Ricardo Markiewicz</B> 
+    <A HREF="mailto:cimarron-hackers%40lists.berlios.de?Subject=Re%3A%20%5BCimarron-hackers%5D%20make%20test%20falla&In-Reply-To=%3C1120236939.23552.30.camel%40localhost.localdomain%3E"
+       TITLE="[Cimarron-hackers] make test falla">rmarkie at fi.uba.ar
+       </A><BR>
+    <I>Fri Jul  1 18:55:38 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000031.html">[Cimarron-hackers] Is the 'target' functionality implemented?
+</A></li>
+        <LI>Next message: <A HREF="000026.html">[Cimarron-hackers] make test falla
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#25">[ date ]</a>
+              <a href="thread.html#25">[ thread ]</a>
+              <a href="subject.html#25">[ subject ]</a>
+              <a href="author.html#25">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>al tratar de ejecutar make test falla en este punto :
+======================================================================
+FAIL: testWindowCanScreenshot (testGtk2.TestGtkWindow)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File &quot;/home/gazer/prog/cimarron/test/testGtk2.py&quot;, line 182, in
+testWindowCanScreenshot
+    self.assertEqual(i.format, 'PNG')
+AssertionError: 'EPS' != 'PNG'
+
+----------------------------------------------------------------------
+Ran 323 tests in 8.611s
+
+FAILED (failures=1)
+
+Lo que tengo instalado :
+ * python2.4-zopeinterface  (3.0.1-1ubuntu1)
+ * zope3-lib                (3.0.91-1ubuntu1
+ * python2.4-gtk2           (2.6.2-1ubuntu1)
+ * python2.4-libxml2        (2.6.17-0ubuntu1)
+
+La distro es Ubuntu Breezy, alguna idea ?
+
+gracias
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000031.html">[Cimarron-hackers] Is the 'target' functionality implemented?
+</A></li>
+	<LI>Next message: <A HREF="000026.html">[Cimarron-hackers] make test falla
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#25">[ date ]</a>
+              <a href="thread.html#25">[ thread ]</a>
+              <a href="subject.html#25">[ subject ]</a>
+              <a href="author.html#25">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/cimarron-hackers">More information about the Cimarron-hackers
+mailing list</a><br>
+</body></html>

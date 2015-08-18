@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Cimarron-hackers] make test does not work
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/cimarron-hackers/2005-August/index.html" >
+   <LINK REL="made" HREF="mailto:cimarron-hackers%40lists.berlios.de?Subject=Re%3A%20%5BCimarron-hackers%5D%20make%20test%20does%20not%20work&In-Reply-To=%3C1124817161.27275.35.camel%40localhost.localdomain%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000060.html">
+   <LINK REL="Next"  HREF="000062.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Cimarron-hackers] make test does not work</H1>
+    <B>Ricardo Markiewicz</B> 
+    <A HREF="mailto:cimarron-hackers%40lists.berlios.de?Subject=Re%3A%20%5BCimarron-hackers%5D%20make%20test%20does%20not%20work&In-Reply-To=%3C1124817161.27275.35.camel%40localhost.localdomain%3E"
+       TITLE="[Cimarron-hackers] make test does not work">rmarkie at fi.uba.ar
+       </A><BR>
+    <I>Tue Aug 23 19:12:41 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000060.html">[Cimarron-hackers] make test does not work
+</A></li>
+        <LI>Next message: <A HREF="000062.html">[Cimarron-hackers] make test does not work
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#61">[ date ]</a>
+              <a href="thread.html#61">[ thread ]</a>
+              <a href="subject.html#61">[ subject ]</a>
+              <a href="author.html#61">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I see that this was fixed :) 
+
+sorry 
+
+Ricardo.
+El mar, 23-08-2005 a las 14:11 -0300, Ricardo Markiewicz escribi&#243;:
+&gt;<i> After check out the new repository make test fails : 
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/cimarron-hackers">gazer at Miriya</A>:~/prog/luca-erp/trunk/cimarron $ make test
+</I>&gt;<i> epydoc --check
+</I>&gt;<i> 
+</I>&gt;<i> no modules specified; run &quot;epydoc -h&quot; for usage.
+</I>&gt;<i> 
+</I>&gt;<i> make: *** [epytest] Error 1
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/cimarron-hackers">gazer at Miriya</A>:~/prog/luca-erp/trunk/cimarron $
+</I>&gt;<i> 
+</I>&gt;<i> The fvl is a symlink now, so a change in Makefile is needed :
+</I>&gt;<i> 
+</I>&gt;<i> - PYTHON_FILES=$(shell find fvl -type f -name \*.py)
+</I>&gt;<i> + PYTHON_FILES=$(shell find fvl/ -type f -name \*.py)}
+</I>&gt;<i> 
+</I>&gt;<i> bye
+</I>&gt;<i> 
+</I>&gt;<i> Ricardo.
+</I>&gt;<i> 
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Cimarron-hackers mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/cimarron-hackers">Cimarron-hackers at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/cimarron-hackers">http://lists.berlios.de/mailman/listinfo/cimarron-hackers</A>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000060.html">[Cimarron-hackers] make test does not work
+</A></li>
+	<LI>Next message: <A HREF="000062.html">[Cimarron-hackers] make test does not work
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#61">[ date ]</a>
+              <a href="thread.html#61">[ thread ]</a>
+              <a href="subject.html#61">[ subject ]</a>
+              <a href="author.html#61">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/cimarron-hackers">More information about the Cimarron-hackers
+mailing list</a><br>
+</body></html>

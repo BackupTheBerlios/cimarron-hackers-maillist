@@ -1,0 +1,1316 @@
+From fheinz at vialibre.org.ar  Thu Aug 11 16:38:46 2005
+From: fheinz at vialibre.org.ar (Federico Heinz)
+Date: Thu, 11 Aug 2005 11:38:46 -0300
+Subject: [Cimarron-hackers] A few things in =?ISO-8859-1?Q?Cimarr=F3n?= that need doing
+Message-ID: <1123771127.3502.34.camel@michelle>
+
+While working on the tutorial, I feel that there are a few functions
+that we must implement soon, for their need is pretty much obvious.
+
+     1. Deleting rows from Grids: We can now create rows, and edit
+        existing rows, but we cannot get rid of a row. This
+        functionality is so basic that we need a general mechanism for
+        handling it. Maybe a simple trashcan icon at the end of each row
+        will be easy enough. Probably this functionality can be turned
+        on and off with a flag, but I feel that it should be better if
+        we had separate classes EditableGrid and SelectionGrid, since
+        their behaviors are bound to be subtly different. EditableGrid
+        should have at least the following delegation methods:
+              * def will_edit_row_col(self, grid, row, col)
+              * def did_edit_row_col(self, grid, row, col)
+              * def will_delete_row(self, grid, row)
+              * def did_delete_row(self, grid)
+              * def will_add_row(self, grid)
+              * def did_add_row(self, grid, row)
+     2. Data validation: this is extremely basic. Controls should be
+        able to handle ValueError exceptions raised by the model. The
+        exception must be able to provide a user-readable error message
+        parameter, which the Control must somehow bring to the user's
+        attention (see Status Bar below). After the exception, the
+        widget must cancel the editing operation that was in course, and
+        expect further input from the user.
+     3. Status bar: the more I think about it, the more necessary a
+        status bar for each window looks, especially for non-intrusive
+        error reporting. For data-entry-intensive applications, error
+        panels are not an option: they disrupt the normal flow of the
+        task, demand specific actions for their dismissal, etc. We had a
+        very nice, functional status bar in the previous Cimarr?n
+        drafts, I think we should bring it back from the dead. Controls
+        ought to be able to find it and use it to display validation
+        errors. A status bar may be harder to find than a panel for a
+        novice user, but they're the way to go for experienced users. To
+        have the best of both worlds, the status bar can be configured
+        to pop up timed error and warning panels when the priority of
+        the message is above a certain configurable threshold. That way,
+        novices can have their panels, and experienced users a less
+        intrusive mechanism. Since it would centralize this kind of
+        communications with the user, the status bar can also remember
+        which messages it has shown, thus providing better debugging
+        information.
+
+	Fede
+-- 
+GnuPG Public Key: gpg --keyserver wwwkeys.eu.pgp.net --recv-key BD02C6E0
+Key Fingerprint: 04F4 08C5 14B7 2C3D DB21  ACF8 6CF5 0B0C BD02 C6E0
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: This is a digitally signed message part
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050811/acfabed3/attachment.pgp>
+
+From fheinz at vialibre.org.ar  Thu Aug 11 20:16:10 2005
+From: fheinz at vialibre.org.ar (Federico Heinz)
+Date: Thu, 11 Aug 2005 15:16:10 -0300
+Subject: [Cimarron-hackers] A question about the implementation of validation
+Message-ID: <1123784170.5156.11.camel@michelle>
+
+I wrote earlier today about validation... now I have a question. The way
+I'd implement validation to avoid null values, for instance, would
+involve having a setFoo() function in the class:
+
+  def setFoo(self, foo=None):
+      if not foo:
+          raise ValueError("You must provide a non-empty value for foo")
+      self.foo = foo
+
+How would this play nice with the API between the Controls and the
+model? Maybe we should define a bit more about the way objects are
+expected to accept data... I'm concerned that, with the current model, a
+subclass cannot override the act of setting a particular attribute in
+order to extend the behavior. Or maybe I'm missing something important
+and very Pythonesque of how this kind of access is handled.
+
+Another approach would be to have the Model.setattr() method
+automatically search for and invoke a method validateFoo() before it
+actually sets anything. This doesn't solve my concern above, of
+course...
+
+	Fede
+-- 
+GnuPG Public Key: gpg --keyserver wwwkeys.eu.pgp.net --recv-key BD02C6E0
+Key Fingerprint: 04F4 08C5 14B7 2C3D DB21  ACF8 6CF5 0B0C BD02 C6E0
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: This is a digitally signed message part
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050811/f741d868/attachment.pgp>
+
+From jlenton at gmail.com  Thu Aug 11 23:35:57 2005
+From: jlenton at gmail.com (John Lenton)
+Date: Thu, 11 Aug 2005 18:35:57 -0300
+Subject: [Cimarron-hackers] =?ISO-8859-1?Q?Re:_[Cimarron-hackers]_A_few_th?=
+ =?ISO-8859-1?Q?ings_in_Cimarr=F3n_that_need_doing?=
+In-Reply-To: <1123771127.3502.34.camel@michelle>
+References: <1123771127.3502.34.camel@michelle>
+Message-ID: <2d9e37f905081114355068ec0c@mail.gmail.com>
+
+On 8/11/05, Federico Heinz <fheinz at vialibre.org.ar> wrote:
+> While working on the tutorial, I feel that there are a few functions
+> that we must implement soon, for their need is pretty much obvious.
+> 
+>      1. Deleting rows from Grids: We can now create rows, and edit
+>         existing rows, but we cannot get rid of a row. This
+>         functionality is so basic that we need a general mechanism for
+>         handling it. Maybe a simple trashcan icon at the end of each row
+>         will be easy enough. Probably this functionality can be turned
+>         on and off with a flag, but I feel that it should be better if
+>         we had separate classes EditableGrid and SelectionGrid, since
+>         their behaviors are bound to be subtly different. EditableGrid
+>         should have at least the following delegation methods:
+>               * def will_edit_row_col(self, grid, row, col)
+>               * def did_edit_row_col(self, grid, row, col)
+>               * def will_delete_row(self, grid, row)
+>               * def did_delete_row(self, grid)
+>               * def will_add_row(self, grid)
+>               * def did_add_row(self, grid, row)
+
+although deleting a row might be more than you're able to do right now
+due to time constraints, you could add tests to try and delete rows
+(these tests will fail, but they'll serve to remind us). Similarly,
+you could add tests for the expected behavior upon delegation (both
+affirmative and negative)...
+
+>      3. Status bar: the more I think about it, the more necessary a
+>         status bar for each window looks, especially for non-intrusive
+>         error reporting. For data-entry-intensive applications, error
+>         panels are not an option: they disrupt the normal flow of the
+>         task, demand specific actions for their dismissal, etc. We had a
+>         very nice, functional status bar in the previous Cimarr?n
+>         drafts, I think we should bring it back from the dead. Controls
+>         ought to be able to find it and use it to display validation
+>         errors. A status bar may be harder to find than a panel for a
+>         novice user, but they're the way to go for experienced users. To
+>         have the best of both worlds, the status bar can be configured
+>         to pop up timed error and warning panels when the priority of
+>         the message is above a certain configurable threshold. That way,
+>         novices can have their panels, and experienced users a less
+>         intrusive mechanism. Since it would centralize this kind of
+>         communications with the user, the status bar can also remember
+>         which messages it has shown, thus providing better debugging
+>         information.
+
+One question: should the statusbar be 'global', do you think?
+
+-- 
+John Lenton (jlenton at gmail.com) -- Random fortune:
+Don't anthropomorphise computers and cars, They hate that.
+
+
+From jlenton at gmail.com  Fri Aug 12 00:03:24 2005
+From: jlenton at gmail.com (John Lenton)
+Date: Thu, 11 Aug 2005 19:03:24 -0300
+Subject: [Cimarron-hackers] A question about the implementation of validation
+In-Reply-To: <1123784170.5156.11.camel@michelle>
+References: <1123784170.5156.11.camel@michelle>
+Message-ID: <2d9e37f9050811150371d3b76a@mail.gmail.com>
+
+On 8/11/05, Federico Heinz <fheinz at vialibre.org.ar> wrote:
+> I wrote earlier today about validation... now I have a question. The way
+> I'd implement validation to avoid null values, for instance, would
+> involve having a setFoo() function in the class:
+> 
+>   def setFoo(self, foo=None):
+>       if not foo:
+>           raise ValueError("You must provide a non-empty value for foo")
+>       self.foo = foo
+
+actually it would probably pay off to have a "ValidationException"
+(subclassing ValueError).
+
+> How would this play nice with the API between the Controls and the
+> model?
+
+right now it wouldn't, but it can be made to do so. How do we *want*
+it to play? how do the developers that will be extending cimarr?n
+expect it to play?
+
+> Maybe we should define a bit more about the way objects are
+> expected to accept data... I'm concerned that, with the current model, a
+> subclass cannot override the act of setting a particular attribute in
+> order to extend the behavior. Or maybe I'm missing something important
+> and very Pythonesque of how this kind of access is handled.
+
+what is it that you say cannot be overriden?
+
+> Another approach would be to have the Model.setattr() method
+> automatically search for and invoke a method validateFoo() before it
+> actually sets anything. This doesn't solve my concern above, of
+> course...
+
+right... that might be a bit too Modeling-y right now.
+
+-- 
+John Lenton (jlenton at gmail.com) -- Random fortune:
+Don't anthropomorphise computers and cars, They hate that.
+
+
+From fheinz at vialibre.org.ar  Fri Aug 12 03:35:30 2005
+From: fheinz at vialibre.org.ar (Federico Heinz)
+Date: Thu, 11 Aug 2005 22:35:30 -0300
+Subject: [Cimarron-hackers] Re: [Cimarron-hackers] A few things in
+	=?ISO-8859-1?Q?Cimarr=F3n?= that need doing
+In-Reply-To: <2d9e37f905081114355068ec0c@mail.gmail.com>
+References: <1123771127.3502.34.camel@michelle>
+	 <2d9e37f905081114355068ec0c@mail.gmail.com>
+Message-ID: <1123810530.5156.103.camel@michelle>
+
+On Thu, 2005-08-11 at 18:35 -0300, John Lenton wrote:
+> although deleting a row might be more than you're able to do right now
+> due to time constraints, you could add tests to try and delete rows
+
+I'll have to figure out the test framework for that... I'll give it a
+try, but I'm likely to need some hand-holding.
+
+> One question: should the statusbar be 'global', do you think?
+
+That's a good question. Actually, I see the statusbar as local to the
+window. But I can see the benefit of a global rendezvous point for user
+messages, which would allow for a trace of the events in the whole
+system. I guess the answer is window-local statusbar, with global
+record-keeping.
+
+	Fede
+
+-- 
+GnuPG Public Key: gpg --keyserver wwwkeys.eu.pgp.net --recv-key BD02C6E0
+Key Fingerprint: 04F4 08C5 14B7 2C3D DB21  ACF8 6CF5 0B0C BD02 C6E0
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: This is a digitally signed message part
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050811/27cda8a7/attachment.pgp>
+
+From fheinz at vialibre.org.ar  Fri Aug 12 03:53:27 2005
+From: fheinz at vialibre.org.ar (Federico Heinz)
+Date: Thu, 11 Aug 2005 22:53:27 -0300
+Subject: [Cimarron-hackers] A question about the implementation of
+	validation
+In-Reply-To: <2d9e37f9050811150371d3b76a@mail.gmail.com>
+References: <1123784170.5156.11.camel@michelle>
+	 <2d9e37f9050811150371d3b76a@mail.gmail.com>
+Message-ID: <1123811607.7195.0.camel@michelle>
+
+On Thu, 2005-08-11 at 19:03 -0300, John Lenton wrote: 
+> actually it would probably pay off to have a "ValidationException"
+> (subclassing ValueError).
+
+Sounds very sensible.
+
+> > How would this play nice with the API between the Controls and the
+> > model?
+> right now it wouldn't, but it can be made to do so. How do we *want*
+> it to play? how do the developers that will be extending cimarr?n
+> expect it to play?
+
+In OOP, it is fairly common that invoking the method to set an attribute
+will also trigger some related action (say, changing the width of a
+container object also tries to figure out the optimum widths for the
+objects within it). In a real OOP language, you can't just do foo.width
+= x to set the width attribute, you must invoke a method (say,
+foo.setWidth()), and that's where you do the magic. This method can be
+overriden by subclasses if the action that gets triggered needs
+refining. When programming the business logic, users will expect to be
+able to do this. Right now, I understand that Cimarr?n's Controls just
+go inside the object, set the value and that's it. If a control was
+being used to control the width attribute of the example above, the
+widths for the elements inside the container would not be recalculated.
+This is counter-intuitive. Maybe the Model.setattr() method ought to
+check for a setFoo() function, and use it if present.
+
+> what is it that you say cannot be overriden?
+
+I hope I made it a bit more clear in the previous paragraph?
+
+Fede
+-- 
+GnuPG Public Key: gpg --keyserver wwwkeys.eu.pgp.net --recv-key BD02C6E0
+Key Fingerprint: 04F4 08C5 14B7 2C3D DB21  ACF8 6CF5 0B0C BD02 C6E0
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: This is a digitally signed message part
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050811/826c7800/attachment.pgp>
+
+From rmarkie at fi.uba.ar  Fri Aug 12 06:41:46 2005
+From: rmarkie at fi.uba.ar (Ricardo Markiewicz)
+Date: Fri, 12 Aug 2005 01:41:46 -0300
+Subject: [Cimarron-hackers] A question about the implementation of
+	validation
+In-Reply-To: <1123811607.7195.0.camel@michelle>
+References: <1123784170.5156.11.camel@michelle>
+	 <2d9e37f9050811150371d3b76a@mail.gmail.com>
+	 <1123811607.7195.0.camel@michelle>
+Message-ID: <1123821706.7628.19.camel@Fokker>
+
+El jue, 11-08-2005 a las 22:53 -0300, Federico Heinz escribi?:
+> In OOP, it is fairly common that invoking the method to set an attribute
+> will also trigger some related action (say, changing the width of a
+> container object also tries to figure out the optimum widths for the
+> objects within it). In a real OOP language, you can't just do foo.width
+> = x to set the width attribute, you must invoke a method (say,
+> foo.setWidth()), and that's where you do the magic. 
+
+Please don't do only that :), these are ok for Java, but not for a
+"real" OOP language :)
+
+> oThis method can be verriden by subclasses if the action that gets triggered needs
+> refining. When programming the business logic, users will expect to be
+
+If width is a public attribute, you would have to use properties to
+accede it.  The best way I know to do that is :
+class A(object):
+  def __init__(self):
+    self.x = 0
+  def get(self):
+    print 'Aget'
+    return self.x
+  def set(self, val):
+    print 'Aset', val
+    self.x = val
+  p = property(get, set)
+
+class B(A):
+  def __init__(self):
+    A.__init__(self)
+
+  def set(self, val):
+    print "Bset"
+    self.x = val + 5
+
+  p = property(A.get, set)
+
+a = B()
+a.p = 6
+print a.p
+
+
+You can use metaclasses too.
+
+-- 
+Ricardo Markiewicz // http://www.fi.uba.ar/~rmarkie/
+
+
+From fheinz at vialibre.org.ar  Fri Aug 12 14:20:00 2005
+From: fheinz at vialibre.org.ar (Federico Heinz)
+Date: Fri, 12 Aug 2005 09:20:00 -0300
+Subject: [Cimarron-hackers] A question about the implementation of
+	validation
+In-Reply-To: <1123821706.7628.19.camel@Fokker>
+References: <1123784170.5156.11.camel@michelle>
+	 <2d9e37f9050811150371d3b76a@mail.gmail.com>
+	 <1123811607.7195.0.camel@michelle>  <1123821706.7628.19.camel@Fokker>
+Message-ID: <1123849200.7195.14.camel@michelle>
+
+On Fri, 2005-08-12 at 01:41 -0300, Ricardo Markiewicz wrote:
+> Please don't do only that :), these are ok for Java, but not for a
+> "real" OOP language :)
+
+Yay! Let the "which is the most OOP languaje wars" begin! :-)
+
+Don't worry, I wasn't thinking of Java, but rather of Smalltalk and
+related languages, which properly support encapsulation.
+
+> If width is a public attribute, you would have to use properties to
+> accede it.
+
+I don't know which is the best way to do it Python, but I know that we
+want the described functionality to work. Properties may be the way to
+go. Whatever we choose to do, however, must be simple: the programmer
+should not be required to write a lot of code in all cases just to cover
+those cases where he needs this. Two good metrics that we must aim at
+optimizing together are: how much code do I need to get the typical case
+working? and how easy is it to understand what is going on in the
+non-typical case?
+
+	Fede
+
+-- 
+GnuPG Public Key: gpg --keyserver wwwkeys.eu.pgp.net --recv-key BD02C6E0
+Key Fingerprint: 04F4 08C5 14B7 2C3D DB21  ACF8 6CF5 0B0C BD02 C6E0
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: This is a digitally signed message part
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050812/6f57c0e3/attachment.pgp>
+
+From rmarkie at fi.uba.ar  Fri Aug 12 19:26:43 2005
+From: rmarkie at fi.uba.ar (Ricardo Markiewicz)
+Date: Fri, 12 Aug 2005 14:26:43 -0300
+Subject: [Cimarron-hackers] Calculator patch
+Message-ID: <1123867604.7183.3.camel@localhost.localdomain>
+
+Hi!, this patch add the missing (or ommited?) "=" operator in the
+calculator tutorial.
+
+bye!
+
+Ricardo.
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: calculator.patch
+Type: text/x-patch
+Size: 1525 bytes
+Desc: not available
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050812/8ba80fa0/attachment.bin>
+
+From mdione at vialibre.org.ar  Fri Aug 12 21:31:40 2005
+From: mdione at vialibre.org.ar (Marcos Dione)
+Date: Fri, 12 Aug 2005 16:31:40 -0300
+Subject: [Cimarron-hackers] Calculator patch
+In-Reply-To: <1123867604.7183.3.camel@localhost.localdomain>
+References: <1123867604.7183.3.camel@localhost.localdomain>
+Message-ID: <200508121631.40762.mdione@vialibre.org.ar>
+
+On Friday 12 de August de 2005 14:26, Ricardo Markiewicz wrote:
+> Hi!, this patch add the missing (or ommited?) "=" operator in the
+> calculator tutorial.
+
+	just as a reminder, you can *also* post patches here:
+
+http://developer.berlios.de/patch/?group_id=2954
+
+-- 
+Marcos Dione 
+Fundacion Via Libre - Belgrano 594 2D - X5000JQL 
+Cordoba - Cordoba - Argentina
+
+
+From rmarkie at fi.uba.ar  Fri Aug 12 21:34:47 2005
+From: rmarkie at fi.uba.ar (Ricardo Markiewicz)
+Date: Fri, 12 Aug 2005 16:34:47 -0300
+Subject: [Cimarron-hackers] Calculator patch
+In-Reply-To: <200508121631.40762.mdione@vialibre.org.ar>
+References: <1123867604.7183.3.camel@localhost.localdomain>
+	 <200508121631.40762.mdione@vialibre.org.ar>
+Message-ID: <1123875287.7183.11.camel@localhost.localdomain>
+
+On vie, 2005-08-12 at 16:31 -0300, Marcos Dione wrote:
+> On Friday 12 de August de 2005 14:26, Ricardo Markiewicz wrote:
+> > Hi!, this patch add the missing (or ommited?) "=" operator in the
+> > calculator tutorial.
+> 
+> 	just as a reminder, you can *also* post patches here:
+> 
+> http://developer.berlios.de/patch/?group_id=2954
+
+I'll try to remenber next time :)
+
+Ricardo.
+
+
+
+
+From mdione at vialibre.org.ar  Fri Aug 12 21:41:52 2005
+From: mdione at vialibre.org.ar (Marcos Dione)
+Date: Fri, 12 Aug 2005 16:41:52 -0300
+Subject: [Cimarron-hackers] A question about the implementation of validation
+In-Reply-To: <1123849200.7195.14.camel@michelle>
+References: <1123784170.5156.11.camel@michelle> <1123821706.7628.19.camel@Fokker> <1123849200.7195.14.camel@michelle>
+Message-ID: <200508121641.52902.mdione@vialibre.org.ar>
+
+On Friday 12 de August de 2005 09:20, Federico Heinz wrote:
+> > If width is a public attribute, you would have to use properties to
+> > accede it.
+>
+> I don't know which is the best way to do it Python, but I know that we
+> want the described functionality to work. Properties may be the way to
+> go. Whatever we choose to do, however, must be simple: the programmer
+> should not be required to write a lot of code in all cases just to cover
+> those cases where he needs this. Two good metrics that we must aim at
+> optimizing together are: how much code do I need to get the typical case
+> working? and how easy is it to understand what is going on in the
+> non-typical case?
+
+	well, overriding a property it's only 4 LOCs more than method overriding 
+(modulo typos):
+
+class A:
+  ...
+  def _set_foo(self, foo):
+    ...
+  def _get_foo(self):
+    ...
+  foo = property(_get_foo, _set_foo) *
+
+class B(A):
+  ...
+  def _set_foo(self, foo):
+    ...
+    super(B, self)._set_foo(foo)
+    ...
+  def _get_foo(self): *
+    return super(B, self)._get_foo(foo) *
+  foo = property(_get_foo, _set_foo) *
+
+	the lines markled with (*) are the `extra` ones. in this example, I only 
+overrided _set_foo(); take notice the _get_foo() must be overrided too. if 
+you were to override both anyways, it would take only 2 more LOCs instead of 
+the 4 ones.
+
+-- 
+Marcos Dione 
+Fundacion Via Libre - Belgrano 594 2D - X5000JQL 
+Cordoba - Cordoba - Argentina
+
+
+From rmarkie at fi.uba.ar  Fri Aug 12 21:42:23 2005
+From: rmarkie at fi.uba.ar (Ricardo Markiewicz)
+Date: Fri, 12 Aug 2005 16:42:23 -0300
+Subject: [Cimarron-hackers] A question about the implementation of
+	validation
+In-Reply-To: <200508121641.52902.mdione@vialibre.org.ar>
+References: <1123784170.5156.11.camel@michelle>
+	 <1123821706.7628.19.camel@Fokker> <1123849200.7195.14.camel@michelle>
+	 <200508121641.52902.mdione@vialibre.org.ar>
+Message-ID: <1123875744.7183.17.camel@localhost.localdomain>
+
+> class B(A):
+>   ...
+>   def _set_foo(self, foo):
+>     ...
+>     super(B, self)._set_foo(foo)
+>     ...
+>   def _get_foo(self): *
+>     return super(B, self)._get_foo(foo) *
+>   foo = property(_get_foo, _set_foo) * (**)
+> 
+> 	the lines markled with (*) are the `extra` ones. in this example, I only 
+> overrided _set_foo(); take notice the _get_foo() must be overrided too. if 
+> you were to override both anyways, it would take only 2 more LOCs instead of 
+> the 4 ones.
+
+In fact you only has one extra line per class (marked as **), because
+you will write the setter/getter anyway (using or not properties).
+
+
+
+
+From rmarkiewicz at assekuransa.com  Fri Aug 12 22:55:18 2005
+From: rmarkiewicz at assekuransa.com (Ricardo Markiewicz)
+Date: Fri, 12 Aug 2005 17:55:18 -0300
+Subject: [Cimarron-hackers] A question about the implementation of
+	validation
+Message-ID: <1123880118.16803.0.camel@localhost.localdomain>
+
+> > In fact you only has one extra line per class (marked as **), because
+> > you will write the setter/getter anyway (using or not properties).
+> 
+> 	not if you only wanted to override _set_foo(). not using properties, it would 
+> be like:
+
+You can only override once, using :
+class B(A):
+ def _set (self, value):
+   super(B, self)._set_foo(foo)
+   do_something_else ()
+
+ foo = property(fset = self._set, fget=Parent._get)
+
+> b = B()
+> b._set_foo(bar)
+
+No. Use b.foo, you're re-declaring the property in B
+
+
+
+
+
+From mdione at vialibre.org.ar  Fri Aug 12 23:05:25 2005
+From: mdione at vialibre.org.ar (Marcos Dione)
+Date: Fri, 12 Aug 2005 18:05:25 -0300
+Subject: [Cimarron-hackers] A question about the implementation of validation
+In-Reply-To: <1123878596.7183.23.camel@localhost.localdomain>
+References: <1123784170.5156.11.camel@michelle> <200508121729.36576.mdione@vialibre.org.ar> <1123878596.7183.23.camel@localhost.localdomain>
+Message-ID: <200508121805.25872.mdione@vialibre.org.ar>
+
+On Friday 12 de August de 2005 17:29, Ricardo Markiewicz wrote:
+> class B(A):
+>  def _set (self, value):
+>    super(B, self)._set_foo(foo)
+>    do_something_else ()
+>
+>  foo = property(fset = self._set, fget=Parent._get)
+
+	you better let the mro() algorithm to define which _get() you meant... or 
+not? [1]
+
+--
+[1] yes, we're mainly talking about simple inheritance here, but, *there are* 
+exceptions...
+-- 
+Marcos Dione 
+Fundacion Via Libre - Belgrano 594 2D - X5000JQL 
+Cordoba - Cordoba - Argentina
+
+
+From jlenton at gmail.com  Fri Aug 12 23:54:01 2005
+From: jlenton at gmail.com (John Lenton)
+Date: Fri, 12 Aug 2005 18:54:01 -0300
+Subject: [Cimarron-hackers] Calculator patch
+In-Reply-To: <200508121631.40762.mdione@vialibre.org.ar>
+References: <1123867604.7183.3.camel@localhost.localdomain>
+	 <200508121631.40762.mdione@vialibre.org.ar>
+Message-ID: <2d9e37f90508121454245e9f3b@mail.gmail.com>
+
+On 8/12/05, Marcos Dione <mdione at vialibre.org.ar> wrote:
+> On Friday 12 de August de 2005 14:26, Ricardo Markiewicz wrote:
+> > Hi!, this patch add the missing (or ommited?) "=" operator in the
+> > calculator tutorial.
+> 
+>         just as a reminder, you can *also* post patches here:
+> 
+> http://developer.berlios.de/patch/?group_id=2954
+
+and we find out about patches posted there ... how?
+
+-- 
+John Lenton (jlenton at gmail.com) -- Random fortune:
+Don't anthropomorphise computers and cars, They hate that.
+
+
+From fheinz at vialibre.org.ar  Sat Aug 13 00:25:44 2005
+From: fheinz at vialibre.org.ar (Federico Heinz)
+Date: Fri, 12 Aug 2005 19:25:44 -0300
+Subject: [Cimarron-hackers] A question about the implementation of
+	validation
+In-Reply-To: <1123875744.7183.17.camel@localhost.localdomain>
+References: <1123784170.5156.11.camel@michelle>
+	 <1123821706.7628.19.camel@Fokker> <1123849200.7195.14.camel@michelle>
+	 <200508121641.52902.mdione@vialibre.org.ar>
+	 <1123875744.7183.17.camel@localhost.localdomain>
+Message-ID: <1123885544.9773.39.camel@michelle>
+
+On Fri, 2005-08-12 at 16:42 -0300, Ricardo Markiewicz wrote:
+> In fact you only has one extra line per class (marked as **), because
+> you will write the setter/getter anyway (using or not properties).
+
+Please, don't forget that LOCs are not the *only* benchmark. We also
+have to make it easy for developers to use and modify. I am not sure
+about the way this property thing would be implemented, especially I
+don't know whether it would be automatically compatible with the current
+Model.setattr() method. What I am concerned is about how much a class
+must know about the implementation of its superclasses. Does the
+programmer have to be aware whether a superclass already declared that
+property? What happens if someone does it twice? What happens if someone
+assumes a superclass did, but it's not true?
+
+I don't know the answers to those, because I'm still at pre-padwan level
+with these Python intricacies... so I now pay respectful silence while
+the Masters display their magic :-)
+
+	Fede
+-- 
+GnuPG Public Key: gpg --keyserver wwwkeys.eu.pgp.net --recv-key BD02C6E0
+Key Fingerprint: 04F4 08C5 14B7 2C3D DB21  ACF8 6CF5 0B0C BD02 C6E0
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: This is a digitally signed message part
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050812/95add34e/attachment.pgp>
+
+From john at except.com.ar  Sat Aug 13 08:28:14 2005
+From: john at except.com.ar (John Lenton)
+Date: Sat, 13 Aug 2005 03:28:14 -0300
+Subject: [Cimarron-hackers] A question about the implementation of	validation
+In-Reply-To: <1123885544.9773.39.camel@michelle>
+References: <1123784170.5156.11.camel@michelle>	 <1123821706.7628.19.camel@Fokker> <1123849200.7195.14.camel@michelle>	 <200508121641.52902.mdione@vialibre.org.ar>	 <1123875744.7183.17.camel@localhost.localdomain> <1123885544.9773.39.camel@michelle>
+Message-ID: <42FD92FE.6000207@except.com.ar>
+
+Federico Heinz wrote:
+> Please, don't forget that LOCs are not the *only* benchmark. We also
+> have to make it easy for developers to use and modify.
+
+Indeed.
+
+> I am not sure
+> about the way this property thing would be implemented, especially I
+> don't know whether it would be automatically compatible with the current
+> Model.setattr() method. What I am concerned is about how much a class
+> must know about the implementation of its superclasses. Does the
+> programmer have to be aware whether a superclass already declared that
+> property? What happens if someone does it twice? What happens if someone
+> assumes a superclass did, but it's not true?
+
+hold it. Let's look at some code, as it would stand right now (i.e.
+given current interfaces), shall we?
+
+Say we have a very simple model:
+
+    class Simple(Model):
+        def __init__(self, anAttribute=None):
+            self.anAttribute = anAttribute
+
+access from Cimarr?n to the model is done via the IModel interface,
+in other words, if an instance of Simple is the target of a Control
+whose attibute is 'anAttribute', the Control will do
+
+    self.target.getattr(self.attribute)
+
+to fetch the value, and
+
+    self.target.setattr(self.attribute, value)
+
+to store the value. And that's it, that's all the interface
+currently says. Keep in mind also that there are two kinds of
+accesses to a Model: internal, via direct attribute manipulation (as
+in the __init__), and external, *which only happens via
+getattr/setattr methods*.
+
+How is setattr currently implemented? Well, if we ignore the fact
+that the attribute can actually be a path, it's basically this:
+
+    class Model(object):
+        def setattr(self, attr, value):
+            setattr(self, attr, value)
+
+ok. So that's the situation, as it stands. Now, let's think about
+validation.
+
+What kind of validation do we mean? Or, what kind do we want or
+need? One kind whose solution leaps to mind is to validate external
+modifications only, i.e. to have
+
+    class Model(object):
+        def setattr(self, attr, value):
+            self.validate(attr, value)
+            setattr(self, attr, value)
+
+and have |validate| raise the appropriate exception if the value is
+invalid.
+
+Another kind is validating all modifications. This can be done with
+a bit of python magic (only a bit):
+
+    class Model(object):
+        def __setattr__(self, attr, value):
+            self.validate(attr, value)
+            super(Model, self).__setattr__(attr, value)
+        def setattr(self, attr, value):
+            setattr(self, attr, value)
+
+whether we need this much validation is debatable, but it's simple
+enough to do if we do.
+
+Both these validation schemes have (at least) a problem, which isn't
+present in Modeling's way of doing validation: it requires validity
+all the time. There are situations where your object must transition
+past an invalid state to reach a valid state. One way around this
+would be to use pre-commit validation as merely informative, i.e.
+let the model be invalid but notify the user. As it's a notification
+and not an error, I think I wouldn't actually raise an exception
+(although again this is debatable), but rather something like
+
+    class Model(object):
+        def setattr(self, attr, value):
+            setattr(self, attr, value)
+            return self.validate(attr, value)
+
+here validate would return -- for example -- None (as it does
+currently) for valid, and some message for invalid, and the Control
+would notify the user using this return value. Or it could return a
+string-like value that was False when non-'Ok'... yeah, that might
+be even better
+
+    class ValidityMessage(unicode):
+        def __nonzero__(self):
+            return self == 'Ok'
+
+so the Control could do
+
+    valid = self.target.setattr(self.attribute, value)
+    if not valid:
+        self.window.statusbar.warn(valid)
+        self.paint_in_garish_colours_so_user_notices()
+
+would this be (a) sufficient, and (b) easy to use and modify?
+
+-- 
+John Lenton (john at except.com.ar)
+except - responsible free software developers for hire.
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 256 bytes
+Desc: OpenPGP digital signature
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050813/819afbd1/attachment.pgp>
+
+From fheinz at vialibre.org.ar  Sat Aug 13 18:30:46 2005
+From: fheinz at vialibre.org.ar (Federico Heinz)
+Date: Sat, 13 Aug 2005 13:30:46 -0300
+Subject: [Cimarron-hackers] A question about derivation within the model
+Message-ID: <1123950647.11466.112.camel@michelle>
+
+So, now this issue has its own thread separate from validation, as it
+should have been from the beginning (sorry for that).
+
+The point we're trying to solve is: assume a class in the model wants to
+add behavior to the process of editing an attribute's value. How would
+the programmer go about this, and how would the mechanism be for derived
+classes that may want to override/extend this behavior?
+
+	Fede
+-- 
+GnuPG Public Key: gpg --keyserver wwwkeys.eu.pgp.net --recv-key BD02C6E0
+Key Fingerprint: 04F4 08C5 14B7 2C3D DB21  ACF8 6CF5 0B0C BD02 C6E0
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: This is a digitally signed message part
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050813/f2c743e9/attachment.pgp>
+
+From john at except.com.ar  Sat Aug 13 20:24:19 2005
+From: john at except.com.ar (John Lenton)
+Date: Sat, 13 Aug 2005 15:24:19 -0300
+Subject: [Cimarron-hackers] A question about derivation within the model
+In-Reply-To: <1123950647.11466.112.camel@michelle>
+References: <1123950647.11466.112.camel@michelle>
+Message-ID: <42FE3AD3.70809@except.com.ar>
+
+Federico Heinz wrote:
+> So, now this issue has its own thread separate from validation, as it
+> should have been from the beginning (sorry for that).
+> 
+> The point we're trying to solve is: assume a class in the model wants to
+> add behavior to the process of editing an attribute's value. How would
+> the programmer go about this, and how would the mechanism be for derived
+> classes that may want to override/extend this behavior?
+
+as it stands right now, everything happens in getattr/setattr (i.e.,
+there is an implicit contract that states "you will not edit this
+except via setattr/getattr").
+
+This will be a pain in the butt when you want to add behavior to a
+subclass of the model, so we should probably change it, but... this
+change is not actually part of cimarron! cimarron ends at the "and
+you reach the model via getattr/setattr" . Beyond that, it's the
+model's business. However, we will probably provide (and we already
+do provide) a simple/example Model for subclassing; once again for
+the discussion I'm going to ignore that attributes are paths, and
+validation, and let's say that getattr/setattr are implemented via
+
+    def getattr(self, attr):
+        return getattr(self, attr)
+    def setattr(self, attr, value):
+        setattr(self, attr, value)
+
+ok? good! now, it is fairly trivial (and cimarron-agnostic) to
+change these to
+
+    def getattr(self, attr):
+        return getattr(self, "get_%s" % (attr,))()
+    def setattr(self, attr, value):
+        getattr(self, "set_%s" % (attr,))(value)
+
+tadaaa! traditionally subclassable getters and setters in the model,
+while still implementing IModel. So there.
+
+-- 
+John Lenton (john at except.com.ar)
+except - responsible free software developers for hire.
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 256 bytes
+Desc: OpenPGP digital signature
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050813/bad01c1f/attachment.pgp>
+
+From john at except.com.ar  Sat Aug 13 20:26:10 2005
+From: john at except.com.ar (John Lenton)
+Date: Sat, 13 Aug 2005 15:26:10 -0300
+Subject: [Cimarron-hackers] A question about the implementation	of	validation
+In-Reply-To: <1123950322.11466.106.camel@michelle>
+References: <1123784170.5156.11.camel@michelle>	 <1123821706.7628.19.camel@Fokker> <1123849200.7195.14.camel@michelle>	 <200508121641.52902.mdione@vialibre.org.ar>	 <1123875744.7183.17.camel@localhost.localdomain>	 <1123885544.9773.39.camel@michelle>  <42FD92FE.6000207@except.com.ar> <1123950322.11466.106.camel@michelle>
+Message-ID: <42FE3B42.9090203@except.com.ar>
+
+Federico Heinz wrote:
+> 
+> This would work. I have a concern here that self.validate would have to
+> be programmed in a very clever way, to avoid leaving the programmer with
+> the task of dispatching the validation code corresponding to the
+> attribute through a long chain of "if" statements.
+
+that's why it's usually done with exceptions, even though a
+validation error is not really exceptional.
+
+> These are, actually, two stages of validation: one is syntactic, the
+> other is semantic. We cannot do semantic validation until the users
+> signals she's done. But we can ensure that numeric values actually get
+> numbers assigned, that entered dates actually exist in the calendar,
+> etc. We can even check that numbers are within a certain range, or that
+> strings are of a certain form. We don't need to wait for semantic
+> validation to flag these, and we shouldn't.
+
+agreed.
+
+-- 
+John Lenton (john at except.com.ar)
+except - responsible free software developers for hire.
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 256 bytes
+Desc: OpenPGP digital signature
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050813/897bf626/attachment.pgp>
+
+From fheinz at vialibre.org.ar  Sat Aug 13 23:39:11 2005
+From: fheinz at vialibre.org.ar (Federico Heinz)
+Date: Sat, 13 Aug 2005 18:39:11 -0300
+Subject: [Cimarron-hackers] A question about the
+	implementation	of	validation
+In-Reply-To: <42FE3B42.9090203@except.com.ar>
+References: <1123784170.5156.11.camel@michelle>
+	 <1123821706.7628.19.camel@Fokker> <1123849200.7195.14.camel@michelle>
+	 <200508121641.52902.mdione@vialibre.org.ar>
+	 <1123875744.7183.17.camel@localhost.localdomain>
+	 <1123885544.9773.39.camel@michelle>  <42FD92FE.6000207@except.com.ar>
+	 <1123950322.11466.106.camel@michelle>  <42FE3B42.9090203@except.com.ar>
+Message-ID: <1123969151.15341.7.camel@michelle>
+
+On Sat, 2005-08-13 at 15:26 -0300, John Lenton wrote:
+> > This would work. I have a concern here that self.validate would have to
+> > be programmed in a very clever way, to avoid leaving the programmer with
+> > the task of dispatching the validation code corresponding to the
+> > attribute through a long chain of "if" statements.
+> that's why it's usually done with exceptions, even though a
+> validation error is not really exceptional.
+
+I wasn't talking about dispatching validation-failure cleanup code, just
+validation code. If we have a single method that validates all
+attributes, as you suggested, that single function must know how to find
+the proper code to validate the value for the attribute we're looking at
+*now*. It's not the same to have validateFoo() and validateBar(), than
+having just validate(), and it must figure what the proper validation is
+for foo or bar.
+
+	Fede
+-- 
+GnuPG Public Key: gpg --keyserver wwwkeys.eu.pgp.net --recv-key BD02C6E0
+Key Fingerprint: 04F4 08C5 14B7 2C3D DB21  ACF8 6CF5 0B0C BD02 C6E0
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: This is a digitally signed message part
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050813/74a93318/attachment.pgp>
+
+From fheinz at vialibre.org.ar  Sun Aug 14 00:21:08 2005
+From: fheinz at vialibre.org.ar (Federico Heinz)
+Date: Sat, 13 Aug 2005 19:21:08 -0300
+Subject: [Cimarron-hackers] A question about the implementation
+	of	validation
+In-Reply-To: <42FD92FE.6000207@except.com.ar>
+References: <1123784170.5156.11.camel@michelle>
+	 <1123821706.7628.19.camel@Fokker> <1123849200.7195.14.camel@michelle>
+	 <200508121641.52902.mdione@vialibre.org.ar>
+	 <1123875744.7183.17.camel@localhost.localdomain>
+	 <1123885544.9773.39.camel@michelle>  <42FD92FE.6000207@except.com.ar>
+Message-ID: <1123971669.15341.45.camel@michelle>
+
+On Sat, 2005-08-13 at 03:28 -0300, John Lenton wrote:
+> hold it. Let's look at some code, as it would stand right now (i.e.
+> given current interfaces), shall we?
+
+You didn't give us much chance, did you? In any case, please note that
+my previous mail was about two issues (my bad)
+      * validation
+      * subclassing within the model
+
+Your proposal and this answer deal with the validation issue. I will
+write another on the subclassing issue.
+
+> Keep in mind also that there are two kinds of
+> accesses to a Model: internal, via direct attribute manipulation (as
+> in the __init__), and external, *which only happens via
+> getattr/setattr methods*.
+
+Well... this may not be *entirely* true. Objects within the model may
+interact among them, setting each other's attribute values in activity
+triggered by the user changing the value of just one of them. So while
+it is true that *user* manipulation only happens through
+getattr/setattr, it is not true that any other manipulation can happen
+only within the class itself.
+
+> What kind of validation do we mean? Or, what kind do we want or
+> need? One kind whose solution leaps to mind is to validate external
+> modifications only, i.e. to have
+>     class Model(object):
+>         def setattr(self, attr, value):
+>             self.validate(attr, value)
+>             setattr(self, attr, value)
+
+This would work. I have a concern here that self.validate would have to
+be programmed in a very clever way, to avoid leaving the programmer with
+the task of dispatching the validation code corresponding to the
+attribute through a long chain of "if" statements.
+
+> Another kind is validating all modifications. This can be done with
+> a bit of python magic (only a bit):
+>     class Model(object):
+>         def __setattr__(self, attr, value):
+>             self.validate(attr, value)
+>             super(Model, self).__setattr__(attr, value)
+>         def setattr(self, attr, value):
+>             setattr(self, attr, value)
+> whether we need this much validation is debatable, but it's simple
+> enough to do if we do.
+
+This is probably overkill... or not. Actually, good practice mandates
+that parameters always be checked for validity as early as possible, so
+it wouldn't be bad to do it. However, I find it hard to guesstimate the
+overhead such a strict validation policy would entail. Maybe it would be
+nice if we could turn such a feature on while debugging, and leaving it
+out in production.
+
+> Both these validation schemes have (at least) a problem, which isn't
+> present in Modeling's way of doing validation: it requires validity
+> all the time. There are situations where your object must transition
+> past an invalid state to reach a valid state.
+
+Good point. A good example of this would be a Triangle object, specified
+by the lengths of its sides. If you stretch the lines one by one, it is
+possible for the object to temporarily not be a valid triangle, but to
+turn back to one after all the changes have been done. However, you do
+not have to wait till the end of all changes to know that there is a
+validation problem if someone tries to set the length of one side to
+"avocado".
+
+These are, actually, two stages of validation: one is syntactic, the
+other is semantic. We cannot do semantic validation until the users
+signals she's done. But we can ensure that numeric values actually get
+numbers assigned, that entered dates actually exist in the calendar,
+etc. We can even check that numbers are within a certain range, or that
+strings are of a certain form. We don't need to wait for semantic
+validation to flag these, and we shouldn't.
+
+The way I see it, the widget must be able to cope with the model
+completely rejecting a value for some reason, and to stop the user in
+her tracks to correct the mistake just then and there. Then, the
+window's controller must have a separate mechanism to ask the model for
+structural validation once the user asks for commit.
+
+	Fede
+-- 
+GnuPG Public Key: gpg --keyserver wwwkeys.eu.pgp.net --recv-key BD02C6E0
+Key Fingerprint: 04F4 08C5 14B7 2C3D DB21  ACF8 6CF5 0B0C BD02 C6E0
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: This is a digitally signed message part
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050813/0b38d286/attachment.pgp>
+
+From fheinz at vialibre.org.ar  Sun Aug 14 00:21:51 2005
+From: fheinz at vialibre.org.ar (Federico Heinz)
+Date: Sat, 13 Aug 2005 19:21:51 -0300
+Subject: [Cimarron-hackers] A question about derivation within the model
+In-Reply-To: <42FE3AD3.70809@except.com.ar>
+References: <1123950647.11466.112.camel@michelle>
+	 <42FE3AD3.70809@except.com.ar>
+Message-ID: <1123971711.15341.47.camel@michelle>
+
+On Sat, 2005-08-13 at 15:24 -0300, John Lenton wrote:
+> tadaaa! traditionally subclassable getters and setters in the model,
+> while still implementing IModel. So there.
+
+Right. Clean and all. And I agree that this doesn't really belong to
+Cimarr?n, it's just that we must make sure that Cimarr?n doesn't
+preclude it from being implementable.
+
+	Fede
+-- 
+GnuPG Public Key: gpg --keyserver wwwkeys.eu.pgp.net --recv-key BD02C6E0
+Key Fingerprint: 04F4 08C5 14B7 2C3D DB21  ACF8 6CF5 0B0C BD02 C6E0
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: This is a digitally signed message part
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050813/7af0823b/attachment.pgp>
+
+From mdione at grulic.org.ar  Tue Aug 23 13:36:38 2005
+From: mdione at grulic.org.ar (Marcos Dione)
+Date: Tue, 23 Aug 2005 08:36:38 -0300
+Subject: [Cimarron-hackers] svn repo moved
+Message-ID: <20050823113638.GH7125@plantalta.homelinux.net>
+
+    the svn repo has been moved to the luca-erp one. please check out:
+    
+svn co svn+ssh://<user>@svn.berlios.de/svnroot/repos/luca-erp/
+
+    replace <user> for whatever it suits. remember all the development will be
+moved to the repo. YOU'VE BEEN WARNED. :-P
+
+-- 
+(Not so) Random fortune:
+18:27 < TheJester> Chipaca: I always suspected one of the 'S' in FOSS stood for
+    sex d8)
+18:27 < TheJester> (as opposed to the 'F'... )
+18:30 < Chipaca> well, it's either free open sex software, or free open source
+    sex; I'm fine with both :-D
+18:30  * Chipaca starts behaving again
+18:31 < TheJester> I think I prefer the former to the latter..
+18:31 < TheJester> With the latter, you'd never know where it's been before.. d;)
+
+
+From rmarkie at fi.uba.ar  Tue Aug 23 18:33:37 2005
+From: rmarkie at fi.uba.ar (Ricardo Markiewicz)
+Date: Tue, 23 Aug 2005 13:33:37 -0300
+Subject: [Cimarron-hackers] svn repo moved
+In-Reply-To: <20050823113638.GH7125@plantalta.homelinux.net>
+References: <20050823113638.GH7125@plantalta.homelinux.net>
+Message-ID: <1124814818.27275.18.camel@localhost.localdomain>
+
+El mar, 23-08-2005 a las 08:36 -0300, Marcos Dione escribi?:
+>     the svn repo has been moved to the luca-erp one. please check out:
+>     
+> svn co svn+ssh://<user>@svn.berlios.de/svnroot/repos/luca-erp/
+
+and for read-only check out ?
+
+I'm trying svn co ssh://svn.berlios.de/svnroot/repos/luca-erp/
+
+but it does not work.
+
+thx!
+
+Ricardo.
+
+
+
+From mdione at vialibre.org.ar  Tue Aug 23 18:53:35 2005
+From: mdione at vialibre.org.ar (Marcos Dione)
+Date: Tue, 23 Aug 2005 13:53:35 -0300
+Subject: [Cimarron-hackers] svn repo moved
+In-Reply-To: <1124814818.27275.18.camel@localhost.localdomain>
+References: <20050823113638.GH7125@plantalta.homelinux.net> <1124814818.27275.18.camel@localhost.localdomain>
+Message-ID: <200508231353.35770.mdione@vialibre.org.ar>
+
+On Tuesday 23 de August de 2005 13:33, Ricardo Markiewicz wrote:
+> El mar, 23-08-2005 a las 08:36 -0300, Marcos Dione escribi?:
+> >     the svn repo has been moved to the luca-erp one. please check out:
+> >
+> > svn co svn+ssh://<user>@svn.berlios.de/svnroot/repos/luca-erp/
+>
+> and for read-only check out ?
+
+	it's called `anonymous? check out.
+
+> I'm trying svn co ssh://svn.berlios.de/svnroot/repos/luca-erp/
+
+	as per http://developer.berlios.de/svn/?group_id=3457:
+
+svn checkout svn://svn.berlios.de/luca-erp/
+
+-- 
+Marcos Dione 
+Fundacion Via Libre - Belgrano 594 2D - X5000JQL 
+Cordoba - Cordoba - Argentina
+
+
+From rmarkie at fi.uba.ar  Tue Aug 23 18:54:46 2005
+From: rmarkie at fi.uba.ar (Ricardo Markiewicz)
+Date: Tue, 23 Aug 2005 13:54:46 -0300
+Subject: [Cimarron-hackers] svn repo moved
+In-Reply-To: <200508231353.35770.mdione@vialibre.org.ar>
+References: <20050823113638.GH7125@plantalta.homelinux.net>
+	 <1124814818.27275.18.camel@localhost.localdomain>
+	 <200508231353.35770.mdione@vialibre.org.ar>
+Message-ID: <1124816086.27275.25.camel@localhost.localdomain>
+
+> > I'm trying svn co ssh://svn.berlios.de/svnroot/repos/luca-erp/
+> 
+> 	as per http://developer.berlios.de/svn/?group_id=3457:
+> 
+> svn checkout svn://svn.berlios.de/luca-erp/
+
+thx!
+
+Ricardo.
+
+
+
+From rmarkie at fi.uba.ar  Tue Aug 23 19:11:14 2005
+From: rmarkie at fi.uba.ar (Ricardo Markiewicz)
+Date: Tue, 23 Aug 2005 14:11:14 -0300
+Subject: [Cimarron-hackers] make test does not work
+Message-ID: <1124817074.27275.33.camel@localhost.localdomain>
+
+After check out the new repository make test fails : 
+gazer at Miriya:~/prog/luca-erp/trunk/cimarron $ make test
+epydoc --check
+
+no modules specified; run "epydoc -h" for usage.
+
+make: *** [epytest] Error 1
+gazer at Miriya:~/prog/luca-erp/trunk/cimarron $
+
+The fvl is a symlink now, so a change in Makefile is needed :
+
+- PYTHON_FILES=$(shell find fvl -type f -name \*.py)
++ PYTHON_FILES=$(shell find fvl/ -type f -name \*.py)}
+
+bye
+
+Ricardo.
+
+
+
+From rmarkie at fi.uba.ar  Tue Aug 23 19:12:41 2005
+From: rmarkie at fi.uba.ar (Ricardo Markiewicz)
+Date: Tue, 23 Aug 2005 14:12:41 -0300
+Subject: [Cimarron-hackers] make test does not work
+In-Reply-To: <1124817074.27275.33.camel@localhost.localdomain>
+References: <1124817074.27275.33.camel@localhost.localdomain>
+Message-ID: <1124817161.27275.35.camel@localhost.localdomain>
+
+I see that this was fixed :) 
+
+sorry 
+
+Ricardo.
+El mar, 23-08-2005 a las 14:11 -0300, Ricardo Markiewicz escribi?:
+> After check out the new repository make test fails : 
+> gazer at Miriya:~/prog/luca-erp/trunk/cimarron $ make test
+> epydoc --check
+> 
+> no modules specified; run "epydoc -h" for usage.
+> 
+> make: *** [epytest] Error 1
+> gazer at Miriya:~/prog/luca-erp/trunk/cimarron $
+> 
+> The fvl is a symlink now, so a change in Makefile is needed :
+> 
+> - PYTHON_FILES=$(shell find fvl -type f -name \*.py)
+> + PYTHON_FILES=$(shell find fvl/ -type f -name \*.py)}
+> 
+> bye
+> 
+> Ricardo.
+> 
+> _______________________________________________
+> Cimarron-hackers mailing list
+> Cimarron-hackers at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/cimarron-hackers
+
+
+
+From mdione at vialibre.org.ar  Tue Aug 23 20:09:30 2005
+From: mdione at vialibre.org.ar (Marcos Dione)
+Date: Tue, 23 Aug 2005 15:09:30 -0300
+Subject: [Cimarron-hackers] make test does not work
+In-Reply-To: <1124817161.27275.35.camel@localhost.localdomain>
+References: <1124817074.27275.33.camel@localhost.localdomain> <1124817161.27275.35.camel@localhost.localdomain>
+Message-ID: <200508231509.30783.mdione@vialibre.org.ar>
+
+On Tuesday 23 de August de 2005 14:12, Ricardo Markiewicz wrote:
+> I see that this was fixed :)
+
+	faster than lightning :)
+
+-- 
+Marcos Dione 
+Fundacion Via Libre - Belgrano 594 2D - X5000JQL 
+Cordoba - Cordoba - Argentina
+
+
+From mdione at vialibre.org.ar  Tue Aug 23 20:10:29 2005
+From: mdione at vialibre.org.ar (Marcos Dione)
+Date: Tue, 23 Aug 2005 15:10:29 -0300
+Subject: [Cimarron-hackers] make test does not work
+In-Reply-To: <1124817161.27275.35.camel@localhost.localdomain>
+References: <1124817074.27275.33.camel@localhost.localdomain> <1124817161.27275.35.camel@localhost.localdomain>
+Message-ID: <200508231510.29912.mdione@vialibre.org.ar>
+
+On Tuesday 23 de August de 2005 14:12, Ricardo Markiewicz wrote:
+> I see that this was fixed :)
+
+	also: taht reminds me to correctly set up the svn commint notification.
+
+-- 
+Marcos Dione 
+Fundacion Via Libre - Belgrano 594 2D - X5000JQL 
+Cordoba - Cordoba - Argentina
+
+

@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Cimarron-hackers] A question about the implementation of validation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/cimarron-hackers/2005-August/index.html" >
+   <LINK REL="made" HREF="mailto:cimarron-hackers%40lists.berlios.de?Subject=Re%3A%20%5BCimarron-hackers%5D%20A%20question%20about%20the%20implementation%20of%20validation&In-Reply-To=%3C1123784170.5156.11.camel%40michelle%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000036.html">
+   <LINK REL="Next"  HREF="000035.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Cimarron-hackers] A question about the implementation of validation</H1>
+    <B>Federico Heinz</B> 
+    <A HREF="mailto:cimarron-hackers%40lists.berlios.de?Subject=Re%3A%20%5BCimarron-hackers%5D%20A%20question%20about%20the%20implementation%20of%20validation&In-Reply-To=%3C1123784170.5156.11.camel%40michelle%3E"
+       TITLE="[Cimarron-hackers] A question about the implementation of validation">fheinz at vialibre.org.ar
+       </A><BR>
+    <I>Thu Aug 11 20:16:10 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000036.html">[Cimarron-hackers] Re: [Cimarron-hackers] A few things in Cimarr&#243;n that need doing
+</A></li>
+        <LI>Next message: <A HREF="000035.html">[Cimarron-hackers] A question about the implementation of validation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#33">[ date ]</a>
+              <a href="thread.html#33">[ thread ]</a>
+              <a href="subject.html#33">[ subject ]</a>
+              <a href="author.html#33">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I wrote earlier today about validation... now I have a question. The way
+I'd implement validation to avoid null values, for instance, would
+involve having a setFoo() function in the class:
+
+  def setFoo(self, foo=None):
+      if not foo:
+          raise ValueError(&quot;You must provide a non-empty value for foo&quot;)
+      self.foo = foo
+
+How would this play nice with the API between the Controls and the
+model? Maybe we should define a bit more about the way objects are
+expected to accept data... I'm concerned that, with the current model, a
+subclass cannot override the act of setting a particular attribute in
+order to extend the behavior. Or maybe I'm missing something important
+and very Pythonesque of how this kind of access is handled.
+
+Another approach would be to have the Model.setattr() method
+automatically search for and invoke a method validateFoo() before it
+actually sets anything. This doesn't solve my concern above, of
+course...
+
+	Fede
+-- 
+GnuPG Public Key: gpg --keyserver wwwkeys.eu.pgp.net --recv-key BD02C6E0
+Key Fingerprint: 04F4 08C5 14B7 2C3D DB21  ACF8 6CF5 0B0C BD02 C6E0
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: This is a digitally signed message part
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050811/f741d868/attachment.pgp">https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050811/f741d868/attachment.pgp</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000036.html">[Cimarron-hackers] Re: [Cimarron-hackers] A few things in Cimarr&#243;n that need doing
+</A></li>
+	<LI>Next message: <A HREF="000035.html">[Cimarron-hackers] A question about the implementation of validation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#33">[ date ]</a>
+              <a href="thread.html#33">[ thread ]</a>
+              <a href="subject.html#33">[ subject ]</a>
+              <a href="author.html#33">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/cimarron-hackers">More information about the Cimarron-hackers
+mailing list</a><br>
+</body></html>

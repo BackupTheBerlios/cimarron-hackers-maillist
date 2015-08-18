@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Cimarron-hackers] Is the 'target' functionality implemented?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/cimarron-hackers/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:cimarron-hackers%40lists.berlios.de?Subject=Re%3A%20%5BCimarron-hackers%5D%20Is%20the%20%27target%27%20functionality%20implemented%3F&In-Reply-To=%3C42C35C40.2030606%40except.com.ar%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000020.html">
+   <LINK REL="Next"  HREF="000022.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Cimarron-hackers] Is the 'target' functionality implemented?</H1>
+    <B>John Lenton</B> 
+    <A HREF="mailto:cimarron-hackers%40lists.berlios.de?Subject=Re%3A%20%5BCimarron-hackers%5D%20Is%20the%20%27target%27%20functionality%20implemented%3F&In-Reply-To=%3C42C35C40.2030606%40except.com.ar%3E"
+       TITLE="[Cimarron-hackers] Is the 'target' functionality implemented?">john at except.com.ar
+       </A><BR>
+    <I>Thu Jun 30 04:43:12 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000020.html">[Cimarron-hackers] Is the 'target' functionality implemented?
+</A></li>
+        <LI>Next message: <A HREF="000022.html">[Cimarron-hackers] Is the 'target' functionality implemented?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#21">[ date ]</a>
+              <a href="thread.html#21">[ thread ]</a>
+              <a href="subject.html#21">[ subject ]</a>
+              <a href="author.html#21">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Federico Heinz wrote:
+&gt;<i> On Wed, 2005-06-29 at 05:25 -0300, John Lenton wrote:
+</I>&gt;&gt;<i>right, you should either inherit from model.base.Model (it's in
+</I>&gt;&gt;<i>examples/person for now, but probably should go elsewhere if we
+</I>&gt;&gt;<i>decide it's worth it: it really is very trivial as it stands) which
+</I>&gt;&gt;<i>will give you fairly obvious getattr/setattr methods, or implement
+</I>&gt;&gt;<i>your own (again, very trivial: look at model.base.Model).
+</I>&gt;<i> 
+</I>&gt;<i> Well, you tell me what's better... Because we must either tell future
+</I>&gt;<i> users that they ought to define this trivial access mode, or that they
+</I>&gt;<i> have to inherit from that class.
+</I>
+I've been working on models today, and this &quot;trivial&quot; model will be
+in fvl.cimarron.model.base.
+
+&gt;&gt;<i>here, take a look at simplepersoneditor.py as it stands now (I'm
+</I>&gt;&gt;<i>comitting this so you get it, but feel free to roll back the changes
+</I>&gt;&gt;<i>if you disagree):
+</I>&gt;<i> 
+</I>&gt;<i> I don't disagree, but the code seems to do it for me: it doesn't work.
+</I>&gt;<i> To actually make it work, you have to call |foo.commitValue()| on each
+</I>&gt;<i> widget in the |checkValues()| method. I think this is not what we want.
+</I>&gt;<i> The idea behind the target thing is that it should allow the programmer
+</I>&gt;<i> to just assign a target to a control, and then just plain forget about
+</I>&gt;<i> it. Any changes made to the object are active immediately (for Entry
+</I>&gt;<i> instances, for example, on losing focus). Of course, there may be a an
+</I>&gt;<i> &quot;Apply&quot; button somewhere in advanced screens, which would apply the
+</I>&gt;<i> changes to the database. But you should not need to do the step of
+</I>&gt;<i> calling |commitValues()| on all widgets for it.
+</I>
+Whoa! slow down! :-D
+
+Currently the widget does not do a |commitValue| upon focus out,
+because of a bug in the code. Just press &lt;enter&gt; and you'll get the
+behavior you want.
+
+Are you absolutely positive that we want to commit on focus out by
+default?
+
+-- 
+John Lenton (<A HREF="https://lists.berlios.de/mailman/listinfo/cimarron-hackers">john at except.com.ar</A>)
+except - responsible free software developers for hire.
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 256 bytes
+Desc: OpenPGP digital signature
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050629/14b32305/attachment.pgp">https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050629/14b32305/attachment.pgp</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000020.html">[Cimarron-hackers] Is the 'target' functionality implemented?
+</A></li>
+	<LI>Next message: <A HREF="000022.html">[Cimarron-hackers] Is the 'target' functionality implemented?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#21">[ date ]</a>
+              <a href="thread.html#21">[ thread ]</a>
+              <a href="subject.html#21">[ subject ]</a>
+              <a href="author.html#21">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/cimarron-hackers">More information about the Cimarron-hackers
+mailing list</a><br>
+</body></html>

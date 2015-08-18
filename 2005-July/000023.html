@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Cimarron-hackers] Assorted news
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/cimarron-hackers/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:cimarron-hackers%40lists.berlios.de?Subject=Re%3A%20%5BCimarron-hackers%5D%20Assorted%20news&In-Reply-To=%3C42C4B25F.3000907%40except.com.ar%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000024.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Cimarron-hackers] Assorted news</H1>
+    <B>John Lenton</B> 
+    <A HREF="mailto:cimarron-hackers%40lists.berlios.de?Subject=Re%3A%20%5BCimarron-hackers%5D%20Assorted%20news&In-Reply-To=%3C42C4B25F.3000907%40except.com.ar%3E"
+       TITLE="[Cimarron-hackers] Assorted news">john at except.com.ar
+       </A><BR>
+    <I>Fri Jul  1 05:02:55 CEST 2005</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000024.html">[Cimarron-hackers] Is the 'target' functionality implemented?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#23">[ date ]</a>
+              <a href="thread.html#23">[ thread ]</a>
+              <a href="subject.html#23">[ subject ]</a>
+              <a href="author.html#23">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Assorted news:
+
+- a few days ago Horacio, our newest developer, added an Image
+widget, complete with tests. You can now use images in cimarron! :)
+(don't expect them to work on curses, however :-D). I should've
+mentioned this earlier...
+
+- you can now 'make coverage', thanks to Gareth Rees's coverage.py
+(included in the tools/ directory).
+
+- Entries can now be told to return something other than the empty
+string when the entry itself is empty. In some cases you need it to
+return None there (subclasses of Entry for specific datatypes will
+need this)
+
+- Window can now take screenshots of themselves (programatically)
+
+you need to install ImageMagick for this to work, and PIL (python
+imaging library) for the tests to pass. Assuming you've taken care
+of that, you can take a screenshot of a window programatically.
+
+Eventually you will be able to 'annotate' the screenshot
+programatically too, but that is still a ways off.
+
+here's the interface:
+
+    def screenshot(filename=None, frame=True):
+        &quot;&quot;&quot;
+        Take a screenshot of the window.
+
+        Store the image in file &lt;filename&gt;.
+
+        If &lt;filename&gt; isn't given, use the filename of the caller
+        with '.png' appended.
+
+        If &lt;frame&gt; is true, include the windowmanager frames.
+
+        &quot;&quot;&quot;
+
+and here's a silly (but working) example:
+
+    import fvl.cimarron
+    fvl.cimarron.config()
+    from fvl.cimarron.skin import Application, Window, Button
+
+    app=Application()
+    win=Window(parent=app, title='oy!')
+    btn=Button(parent=win,
+               label='Oooh! Clicky!',
+               onAction=lambda b: win.screenshot('X:'))
+    win.show()
+    app.run()
+
+(note we used ImageMagick's &quot;special&quot; file 'X:' to display the image
+on your current display).
+
+-- 
+John Lenton (<A HREF="https://lists.berlios.de/mailman/listinfo/cimarron-hackers">john at except.com.ar</A>)
+except - responsible free software developers for hire.
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 256 bytes
+Desc: OpenPGP digital signature
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050701/3429fe77/attachment.pgp">https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050701/3429fe77/attachment.pgp</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000024.html">[Cimarron-hackers] Is the 'target' functionality implemented?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#23">[ date ]</a>
+              <a href="thread.html#23">[ thread ]</a>
+              <a href="subject.html#23">[ subject ]</a>
+              <a href="author.html#23">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/cimarron-hackers">More information about the Cimarron-hackers
+mailing list</a><br>
+</body></html>

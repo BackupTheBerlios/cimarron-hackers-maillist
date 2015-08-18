@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Cimarron-hackers] A question about the implementation of	validation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/cimarron-hackers/2005-August/index.html" >
+   <LINK REL="made" HREF="mailto:cimarron-hackers%40lists.berlios.de?Subject=Re%3A%20%5BCimarron-hackers%5D%20A%20question%20about%20the%20implementation%20of%0A%09validation&In-Reply-To=%3C1123811607.7195.0.camel%40michelle%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000035.html">
+   <LINK REL="Next"  HREF="000038.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Cimarron-hackers] A question about the implementation of	validation</H1>
+    <B>Federico Heinz</B> 
+    <A HREF="mailto:cimarron-hackers%40lists.berlios.de?Subject=Re%3A%20%5BCimarron-hackers%5D%20A%20question%20about%20the%20implementation%20of%0A%09validation&In-Reply-To=%3C1123811607.7195.0.camel%40michelle%3E"
+       TITLE="[Cimarron-hackers] A question about the implementation of	validation">fheinz at vialibre.org.ar
+       </A><BR>
+    <I>Fri Aug 12 03:53:27 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000035.html">[Cimarron-hackers] A question about the implementation of validation
+</A></li>
+        <LI>Next message: <A HREF="000038.html">[Cimarron-hackers] A question about the implementation of	validation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#37">[ date ]</a>
+              <a href="thread.html#37">[ thread ]</a>
+              <a href="subject.html#37">[ subject ]</a>
+              <a href="author.html#37">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 2005-08-11 at 19:03 -0300, John Lenton wrote: 
+&gt;<i> actually it would probably pay off to have a &quot;ValidationException&quot;
+</I>&gt;<i> (subclassing ValueError).
+</I>
+Sounds very sensible.
+
+&gt;<i> &gt; How would this play nice with the API between the Controls and the
+</I>&gt;<i> &gt; model?
+</I>&gt;<i> right now it wouldn't, but it can be made to do so. How do we *want*
+</I>&gt;<i> it to play? how do the developers that will be extending cimarr&#243;n
+</I>&gt;<i> expect it to play?
+</I>
+In OOP, it is fairly common that invoking the method to set an attribute
+will also trigger some related action (say, changing the width of a
+container object also tries to figure out the optimum widths for the
+objects within it). In a real OOP language, you can't just do foo.width
+= x to set the width attribute, you must invoke a method (say,
+foo.setWidth()), and that's where you do the magic. This method can be
+overriden by subclasses if the action that gets triggered needs
+refining. When programming the business logic, users will expect to be
+able to do this. Right now, I understand that Cimarr&#243;n's Controls just
+go inside the object, set the value and that's it. If a control was
+being used to control the width attribute of the example above, the
+widths for the elements inside the container would not be recalculated.
+This is counter-intuitive. Maybe the Model.setattr() method ought to
+check for a setFoo() function, and use it if present.
+
+&gt;<i> what is it that you say cannot be overriden?
+</I>
+I hope I made it a bit more clear in the previous paragraph?
+
+Fede
+-- 
+GnuPG Public Key: gpg --keyserver wwwkeys.eu.pgp.net --recv-key BD02C6E0
+Key Fingerprint: 04F4 08C5 14B7 2C3D DB21  ACF8 6CF5 0B0C BD02 C6E0
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: This is a digitally signed message part
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050811/826c7800/attachment.pgp">https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050811/826c7800/attachment.pgp</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000035.html">[Cimarron-hackers] A question about the implementation of validation
+</A></li>
+	<LI>Next message: <A HREF="000038.html">[Cimarron-hackers] A question about the implementation of	validation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#37">[ date ]</a>
+              <a href="thread.html#37">[ thread ]</a>
+              <a href="subject.html#37">[ subject ]</a>
+              <a href="author.html#37">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/cimarron-hackers">More information about the Cimarron-hackers
+mailing list</a><br>
+</body></html>

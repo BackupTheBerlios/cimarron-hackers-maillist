@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Cimarron-hackers] A question about the implementation	of	validation
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/cimarron-hackers/2005-August/index.html" >
+   <LINK REL="made" HREF="mailto:cimarron-hackers%40lists.berlios.de?Subject=Re%3A%20%5BCimarron-hackers%5D%20A%20question%20about%20the%20implementation%09of%09validation&In-Reply-To=%3C42FE3B42.9090203%40except.com.ar%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000055.html">
+   <LINK REL="Next"  HREF="000053.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Cimarron-hackers] A question about the implementation	of	validation</H1>
+    <B>John Lenton</B> 
+    <A HREF="mailto:cimarron-hackers%40lists.berlios.de?Subject=Re%3A%20%5BCimarron-hackers%5D%20A%20question%20about%20the%20implementation%09of%09validation&In-Reply-To=%3C42FE3B42.9090203%40except.com.ar%3E"
+       TITLE="[Cimarron-hackers] A question about the implementation	of	validation">john at except.com.ar
+       </A><BR>
+    <I>Sat Aug 13 20:26:10 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000055.html">[Cimarron-hackers] A question about derivation within the model
+</A></li>
+        <LI>Next message: <A HREF="000053.html">[Cimarron-hackers] A question about the	implementation	of	validation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#52">[ date ]</a>
+              <a href="thread.html#52">[ thread ]</a>
+              <a href="subject.html#52">[ subject ]</a>
+              <a href="author.html#52">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Federico Heinz wrote:
+&gt;<i> 
+</I>&gt;<i> This would work. I have a concern here that self.validate would have to
+</I>&gt;<i> be programmed in a very clever way, to avoid leaving the programmer with
+</I>&gt;<i> the task of dispatching the validation code corresponding to the
+</I>&gt;<i> attribute through a long chain of &quot;if&quot; statements.
+</I>
+that's why it's usually done with exceptions, even though a
+validation error is not really exceptional.
+
+&gt;<i> These are, actually, two stages of validation: one is syntactic, the
+</I>&gt;<i> other is semantic. We cannot do semantic validation until the users
+</I>&gt;<i> signals she's done. But we can ensure that numeric values actually get
+</I>&gt;<i> numbers assigned, that entered dates actually exist in the calendar,
+</I>&gt;<i> etc. We can even check that numbers are within a certain range, or that
+</I>&gt;<i> strings are of a certain form. We don't need to wait for semantic
+</I>&gt;<i> validation to flag these, and we shouldn't.
+</I>
+agreed.
+
+-- 
+John Lenton (<A HREF="https://lists.berlios.de/mailman/listinfo/cimarron-hackers">john at except.com.ar</A>)
+except - responsible free software developers for hire.
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 256 bytes
+Desc: OpenPGP digital signature
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050813/897bf626/attachment.pgp">https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050813/897bf626/attachment.pgp</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000055.html">[Cimarron-hackers] A question about derivation within the model
+</A></li>
+	<LI>Next message: <A HREF="000053.html">[Cimarron-hackers] A question about the	implementation	of	validation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#52">[ date ]</a>
+              <a href="thread.html#52">[ thread ]</a>
+              <a href="subject.html#52">[ subject ]</a>
+              <a href="author.html#52">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/cimarron-hackers">More information about the Cimarron-hackers
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Cimarron-hackers] Is the 'target' functionality implemented?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/cimarron-hackers/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:cimarron-hackers%40lists.berlios.de?Subject=Re%3A%20%5BCimarron-hackers%5D%20Is%20the%20%27target%27%20functionality%20implemented%3F&In-Reply-To=%3C1120124810.22169.29.camel%40michelle%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000021.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Cimarron-hackers] Is the 'target' functionality implemented?</H1>
+    <B>Federico Heinz</B> 
+    <A HREF="mailto:cimarron-hackers%40lists.berlios.de?Subject=Re%3A%20%5BCimarron-hackers%5D%20Is%20the%20%27target%27%20functionality%20implemented%3F&In-Reply-To=%3C1120124810.22169.29.camel%40michelle%3E"
+       TITLE="[Cimarron-hackers] Is the 'target' functionality implemented?">fheinz at vialibre.org.ar
+       </A><BR>
+    <I>Thu Jun 30 11:46:49 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000021.html">[Cimarron-hackers] Is the 'target' functionality implemented?
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#22">[ date ]</a>
+              <a href="thread.html#22">[ thread ]</a>
+              <a href="subject.html#22">[ subject ]</a>
+              <a href="author.html#22">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 2005-06-29 at 23:43 -0300, John Lenton wrote:
+&gt;<i> Whoa! slow down! :-D
+</I>
+Slowing... down... slowed.
+
+&gt;<i> Currently the widget does not do a |commitValue| upon focus out,
+</I>&gt;<i> because of a bug in the code. Just press &lt;enter&gt; and you'll get the
+</I>&gt;<i> behavior you want.
+</I>
+aha! Hadn't noticed it.
+
+&gt;<i> Are you absolutely positive that we want to commit on focus out by
+</I>&gt;<i> default?
+</I>
+Hmm... I'm sure we want the screen to reflect the object's state (which
+is the case now if the user presses &lt;Enter&gt;), and not a future object
+state (which is the case now if the user presses &lt;Tab&gt;), and much less a
+mix between the two (which is the case now if the user presses &lt;Enter&gt;
+some, &lt;Tab&gt; some). The only way I can think of right now to get that
+behavior is to commit on focus out for Entry instances, and on other
+events for other widgets (on click for buttons, for example, on select
+for calendars, etc).
+
+Maybe we shouldn't force a commit on focus out, but rather check whether
+the value has really changed (compare the widget's value against the
+model), and only commit if there has been a real change.
+
+BTW: do you like the Cimarr&#243;n 4-op calculator I'm about to include in
+the tutorial?
+
+	Fede
+
+-- 
+GnuPG Public Key: gpg --keyserver wwwkeys.eu.pgp.net --recv-key BD02C6E0
+Key Fingerprint: 04F4 08C5 14B7 2C3D DB21  ACF8 6CF5 0B0C BD02 C6E0
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 189 bytes
+Desc: This is a digitally signed message part
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050630/aaeda65f/attachment.pgp">https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050630/aaeda65f/attachment.pgp</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000021.html">[Cimarron-hackers] Is the 'target' functionality implemented?
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#22">[ date ]</a>
+              <a href="thread.html#22">[ thread ]</a>
+              <a href="subject.html#22">[ subject ]</a>
+              <a href="author.html#22">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/cimarron-hackers">More information about the Cimarron-hackers
+mailing list</a><br>
+</body></html>

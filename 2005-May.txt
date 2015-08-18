@@ -1,0 +1,286 @@
+From mdione at grulic.org.ar  Sat May  7 21:41:37 2005
+From: mdione at grulic.org.ar (Marcos Dione)
+Date: Sat, 7 May 2005 16:41:37 -0300
+Subject: [Cimarron-hackers] nueva =?iso-8859-1?Q?versi=F3n_de_cimarr?=
+ =?iso-8859-1?Q?=F3n?=
+Message-ID: <20050507194136.GD30755@plantalta.homelinux.net>
+
+    con el se?orito lenton hemos estado laburando estas 5 semanas para poner a
+punto la segunda versi?n de cimarr?n. ?sta es una reescritura de cero, con un
+ejemplo para que lo vayan viendo. warning: rompe compatibilidad para atr?s, pero
+por suerte no ten?amos una base de usuarios muy grande (hola marce!).
+
+    cosas que faltan: documentaci?n (real soon now) y un grid que sirva de algo
+(hay una, pero medio que apesta). cosas que s? andan que antes no: tenemos tests
+que prueban que el bicho anda bien, b?squeda que funciona como debiera, y una
+interfaz un poco mejor definida. obt?nganl?n de:
+
+https://developer.berlios.de/project/showfiles.php?group_id=2954
+
+-- 
+(Not so) Random fortune:
+12:17 < yogurt2ungue> Parece que queria encamarse con uno llamado Juanes o algo
+    asi, y entro a la conferencia que estba dando
+12:18 < yogurt2ungue> La mina dijo, en otros terminos claro, yo a este junes me
+    lo bolteo de una solo con el fisico
+12:19 < yogurt2ungue> El tipo como un heroe dijo, Mira naifa vos tenes 2 buenas
+    razones para hacerlo, pero yo tengo 2 razones para no hacerlo, mi hija y mi
+    esposa
+
+
+From mdione at grulic.org.ar  Sun May 15 23:36:01 2005
+From: mdione at grulic.org.ar (Marcos Dione)
+Date: Sun, 15 May 2005 18:36:01 -0300
+Subject: [Cimarron-hackers] nueva =?iso-8859-1?Q?vesi=F3n_de_cimarr=F3?=
+ =?iso-8859-1?Q?n?= - 0.2.5
+Message-ID: <20050515213601.GD1683@plantalta.homelinux.net>
+
+    con lenton lo hicimos de nuevo: nueva versi?n de cimarr?n. no es mucho lo
+nuevo (al fin y al cabo estamos hablando de s?lo una semena): un Grod
+implementado en el skin gtk2 y documentaci?n. s?, pueden leer de nuevo si no
+creen sus ojos: do-cu-men-ta-ci?n. descarguen de:
+
+https://developer.berlios.de/project/showfiles.php?group_id=2954
+
+-- 
+(Not so) Random fortune:
+[10:47] <Slackatefn> Ah, para uds debianistas... Debian women: geek feminist in
+    action @ osnews.com
+[10:49] <Zzzoom> bueno, con algo de suerte no procrean debianos y debianas
+[10:49] <Zzzoom> les va a costar dar copias del source
+
+
+From mdione at grulic.org.ar  Fri May 20 18:30:49 2005
+From: mdione at grulic.org.ar (Marcos Dione)
+Date: Fri, 20 May 2005 13:30:49 -0300
+Subject: [Cimarron-hackers] Re: cimarron 0.3
+In-Reply-To: <428CC982.5060808@lunix.com.ar>
+References: <4287CEAC.2000702@lunix.com.ar> <20050516002642.GG1683@plantalta.homelinux.net> <428CC982.5060808@lunix.com.ar>
+Message-ID: <20050520163049.GB28365@plantalta.homelinux.net>
+
+On Thu, May 19, 2005 at 02:14:42PM -0300, Lucas Di Pentima wrote:
+> Estar?a bueno que documentes en alg?n txt simpl?n c?mo debe ser el
+> comportamiento del teclado as? lo vamos matcheando.
+
+    ok, veo si puedo.
+
+> Otra cosa!! cual es la lista adecuada para seguir charlando de estos
+> asuntos?? asi me suscribo!
+
+    cimarron-hackers at lists.berlios.de. fijate en elsitio de cimarron en
+http://developers.berlios.de.
+
+-- 
+(Not so) Random fortune:
+Debo pasar m?s tiempo con mi computadora.
+                                -- A. L.
+
+
+From lucas at lunix.com.ar  Fri May 20 23:35:36 2005
+From: lucas at lunix.com.ar (Lucas Di Pentima)
+Date: Fri, 20 May 2005 18:35:36 -0300
+Subject: [Cimarron-hackers] Saludo
+Message-ID: <428E5828.400@lunix.com.ar>
+
+Hola gente!
+
+Este mail es en parte una prueba a ver si me suscrib? correctamente,
+parte saludo para los amigos cimarroneros (o cimarritas), y como si esto
+fuera poco, para comentarles que con Nicol?s C?sar en una noche de
+alcohol comenzamos el ?skin? Qt de Cimarr?n, que ya Marcos empez? a
+probar...
+
+Saludos!!
+-- 
+Lucas Di Pentima - Santa Fe, Argentina - Jabber ID: lucas at lunix.com.ar
+LUNIX S.R.L. - Soluciones en GNU/Linux - http://www.lunix.com.ar
+GnuPG Public Key:
+http://random.sks.keyserver.penguin.de:11371/pks/lookup?op=get&search=0x6AA54FC9
+Key fingerprint = BD3B 08C4 661A 8C3B 1855  740C 8F98 3FCF 6AA5 4FC9
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 256 bytes
+Desc: OpenPGP digital signature
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050520/e21ddfe5/attachment.pgp>
+
+From jlenton at gmail.com  Fri May 20 23:57:18 2005
+From: jlenton at gmail.com (John Lenton)
+Date: Fri, 20 May 2005 18:57:18 -0300
+Subject: [Cimarron-hackers] Saludo
+In-Reply-To: <428E5828.400@lunix.com.ar>
+References: <428E5828.400@lunix.com.ar>
+Message-ID: <2d9e37f90505201457ac392ae@mail.gmail.com>
+
+On 5/20/05, Lucas Di Pentima <lucas at lunix.com.ar> wrote:
+> Hola gente!
+> 
+> Este mail es en parte una prueba a ver si me suscrib? correctamente,
+> parte saludo para los amigos cimarroneros (o cimarritas), y como si esto
+> fuera poco, para comentarles que con Nicol?s C?sar en una noche de
+> alcohol comenzamos el ?skin? Qt de Cimarr?n, que ya Marcos empez? a
+> probar...
+
+puedo sugerirles (pedirles, implorarles) que usen el svn del proyecto
+para llevar esto? Entiendo que todav?a no est? para estar en el trunk,
+pero h?ganse un branch y m?tanlo ah?.
+
+Ah, che StyX, pod?s darles los permisos en Berlios para que esto sea
+posible? y de paso cambiar la config del mailman para que le ponga el
+reply-to a los mensajes de la lista?
+
+txs.
+
+-- 
+John Lenton (jlenton at gmail.com) -- Random fortune:
+Don't anthropomorphise computers and cars, They hate that.
+
+
+From lucas at lunix.com.ar  Sat May 21 00:52:08 2005
+From: lucas at lunix.com.ar (Lucas Di Pentima)
+Date: Fri, 20 May 2005 19:52:08 -0300
+Subject: [Cimarron-hackers] Saludo
+In-Reply-To: <2d9e37f90505201457ac392ae@mail.gmail.com>
+References: <428E5828.400@lunix.com.ar> <2d9e37f90505201457ac392ae@mail.gmail.com>
+Message-ID: <428E6A18.1060904@lunix.com.ar>
+
+Hola John!!
+
+John Lenton wrote, On 20/05/05 18:57:
+
+> puedo sugerirles (pedirles, implorarles) que usen el svn del proyecto
+> para llevar esto? Entiendo que todav?a no est? para estar en el trunk,
+> pero h?ganse un branch y m?tanlo ah?.
+Mmmm no problem! nunca us? svn, es una buena excusa para probarlo.
+
+> Ah, che StyX, pod?s darles los permisos en Berlios para que esto sea
+> posible? y de paso cambiar la config del mailman para que le ponga el
+> reply-to a los mensajes de la lista?
+Eso ser?a muuuuuuuy bueno :-)
+
+Y para seguir probando ?Cimarr?nQt? ...el tema del grid, est? en el
+ejemplo? es decir...cuando aparece esa lista de gente, eso es un grid
+no? digo como para seguir comparando comportamientos.
+
+Saludos!!
+-- 
+Lucas Di Pentima - Santa Fe, Argentina - Jabber ID: lucas at lunix.com.ar
+LUNIX S.R.L. - Soluciones en GNU/Linux - http://www.lunix.com.ar
+GnuPG Public Key:
+http://random.sks.keyserver.penguin.de:11371/pks/lookup?op=get&search=0x6AA54FC9
+Key fingerprint = BD3B 08C4 661A 8C3B 1855  740C 8F98 3FCF 6AA5 4FC9
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 256 bytes
+Desc: OpenPGP digital signature
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050520/a92fb659/attachment.pgp>
+
+From jlenton at gmail.com  Sat May 21 02:40:08 2005
+From: jlenton at gmail.com (John Lenton)
+Date: Fri, 20 May 2005 21:40:08 -0300
+Subject: [Cimarron-hackers] Saludo
+In-Reply-To: <428E6A18.1060904@lunix.com.ar>
+References: <428E5828.400@lunix.com.ar>
+	 <2d9e37f90505201457ac392ae@mail.gmail.com>
+	 <428E6A18.1060904@lunix.com.ar>
+Message-ID: <2d9e37f90505201740e5b7196@mail.gmail.com>
+
+On 5/20/05, Lucas Di Pentima <lucas at lunix.com.ar> wrote:
+> Y para seguir probando ?Cimarr?nQt? ...el tema del grid, est? en el
+> ejemplo? es decir...cuando aparece esa lista de gente, eso es un grid
+> no? digo como para seguir comparando comportamientos.
+
+a ver... s?, se usa Grid en el ejemplo, para los addresses. Adem?s
+ten?s un controllers.Grid que est? armado a partir de widgets m?s
+b?sicos (no pasa todos los tests... tendr?amos que arreglar eso), que
+supuestamente se comporta igual (pero no lo hace: los tests que fallan
+son justamente para verificar comportamiento que agregamos despu?s de
+Gtk2izar Grid).
+
+-- 
+John Lenton (jlenton at gmail.com) -- Random fortune:
+Don't anthropomorphise computers and cars, They hate that.
+
+
+From mdione at grulic.org.ar  Mon May 23 23:53:17 2005
+From: mdione at grulic.org.ar (Marcos Dione)
+Date: Mon, 23 May 2005 18:53:17 -0300
+Subject: [Cimarron-hackers] Re: cimarron 0.3
+In-Reply-To: <4287CEAC.2000702@lunix.com.ar>
+References: <4287CEAC.2000702@lunix.com.ar>
+Message-ID: <20050523215317.GB13451@plantalta.homelinux.net>
+
+On Sun, May 15, 2005 at 07:35:24PM -0300, Lucas Di Pentima wrote:
+> Marcos,
+> para que te diviertas
+
+    ok, comentarios aparte de los que ya les dije. tendrian que hacer versiones
+qt de los test en testGtk2.py y luego hacer pasar su modulo por esos tests. no
+vendria mal que se hagan unos usuarios en developer.berlios.de y se bajen el svn
+de cimarron, asi de paso lo integran uds mismos.
+
+    tambien los invito al canal #cimarron en irc.freenode.net para discusiones
+mas on-line.
+
+PD: hoy no estoy inspirado para escribir
+-- 
+(Not so) Random fortune:
+18:27 < TheJester> Chipaca: I always suspected one of the 'S' in FOSS stood for
+    sex d8)
+18:27 < TheJester> (as opposed to the 'F'... )
+18:30 < Chipaca> well, it's either free open sex software, or free open source
+    sex; I'm fine with both :-D
+18:30  * Chipaca starts behaving again
+18:31 < TheJester> I think I prefer the former to the latter..
+18:31 < TheJester> With the latter, you'd never know where it's been before.. d;)
+
+
+From john at except.com.ar  Sat May 28 02:22:29 2005
+From: john at except.com.ar (John Lenton)
+Date: Fri, 27 May 2005 21:22:29 -0300
+Subject: [Cimarron-hackers] status
+Message-ID: <4297B9C5.9080903@except.com.ar>
+
+Estamos un poco demorados con respecto a d?nde quer?amos estar esta
+semana. Cuando digo "un poco" quiero decir que bastante, pero no es
+que nos hemos atascado ni nada as?, simplemente que las cosas est?
+costando m?s de lo predicho, y que el tiempo del que hemos podido
+disponer para efectivamente dedicarle a cimarr?n/luca ha sido menor
+del predicho.
+
+Como ya les cont?, hab?amos pensado llegar a esta fecha con el
+generador de la pantalla de Persona (habiendo hecho Pa?s y Ciudad)
+terminado, pero la tarea de "enganchar" de una forma m?s o menos
+limpia una pantalla desde adentro de s? misma resulta ser bastante
+delicada; por lo que entiendo (del resumen que me cont? Marcos antes
+de irse) el c?digo de ?l ya hace eso, y la semana que viene le
+empezamos a dar para adelante otra vez.
+
+Bueno, eso quer?a contarles; por eso no hay release hoy. Si quieren
+ver lo que tenemos, est? en el branch "crud_loading_from_xml":
+http://svn.berlios.de/viewcvs/cimarron/branches/crud_loading_from_xml/
+
+Ah! lo que ac? llamamos "ABM", en otros lugares donde se habla
+ingl?s llaman "crud" [http://c2.com/cgi/wiki?CrudScreen], por
+"Create Read Update Delete". Est? bueno porque quiere decir "grela"
+:). As? que el Controller para pantallas de ABM se llamar?
+CRUDController o CrudController (en este instante veo que se llama
+CrUDController, pero ya arreglaremos eso).
+
+-- 
+John Lenton (john at except.com.ar)
+Except: Soluciones Inform?ticas Libres
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 256 bytes
+Desc: OpenPGP digital signature
+URL: <https://lists.berlios.de/pipermail/cimarron-hackers/attachments/20050527/266d4dd3/attachment.pgp>
+
